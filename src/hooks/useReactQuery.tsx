@@ -5,7 +5,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import React, { useState } from 'react'
 
 const useReactQuery = ({ children }: React.PropsWithChildren) => {
-    const [queryClient] = useState(() => {
+    const queryClient = () => {
         const client = new QueryClient({
             defaultOptions: {
                 queries: {
@@ -16,10 +16,10 @@ const useReactQuery = ({ children }: React.PropsWithChildren) => {
         })
 
         return client;
-    })
+    }
 
     return (
-        <QueryClientProvider client={queryClient}>
+        <QueryClientProvider client={queryClient()}>
             {children}
             <ReactQueryDevtools initialIsOpen={false} />
         </QueryClientProvider>
