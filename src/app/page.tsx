@@ -2,7 +2,7 @@ import { Flex } from "@chakra-ui/react";
 import Image from "next/image";
 import Movie from "./_components/Movie";
 
-export default function Home() {
+function Home() {
   return (
     <Flex
       flex={1}
@@ -25,3 +25,8 @@ export default function Home() {
 }
 
 
+Home.getLayout = function getLayout(page: React.ReactNode) {
+  return page; // 특정 레이아웃 사용
+};
+
+export default Home;

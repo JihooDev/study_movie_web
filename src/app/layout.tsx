@@ -15,10 +15,10 @@ export default function RootLayout({
       <body>
         <ChakraProvider>
           <ReactQueryProvider>
-            <Stack w={'100%'} h={'100vh'} gap={0}>
+            <Stack w={'100%'} gap={0}>
               <Header />
               {children}
-              <Footer></Footer>
+              <Footer />
             </Stack>
           </ReactQueryProvider>
         </ChakraProvider>

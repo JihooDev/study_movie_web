@@ -7,12 +7,14 @@ const tmdb = axios.create({
     },
     params: {
         api_key: process.env.NEXT_PUBLIC_TMDB_API_KEY,
-        language: 'ko-KR'
+        language: 'ko-KR',
     }
 })
 
-export const getTopRated = async () => {
-    const { data } = await tmdb.get(`/movie/top_rated`);
+export const getTopRated = async ({ pageCount }: { pageCount: number }) => {
+    const { data } = await tmdb.get(`/movie/top_rated?page=${pageCount}`);
+
+    console.log(`/movie/top_rated?page=${pageCount}`)
 
     return data;
 }
