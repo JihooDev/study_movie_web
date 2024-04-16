@@ -1,6 +1,6 @@
 'use client';
 
-import { Box, Flex, Grid, Stack } from '@chakra-ui/react';
+import { Box, ChakraProvider, Flex, Grid, Stack, Text } from '@chakra-ui/react';
 import React, { ReactElement, useEffect, useState } from 'react'
 import MovieList from './MovieList';
 import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
@@ -10,69 +10,72 @@ import { useInView } from 'react-intersection-observer';
 import useIntersection from '@/hooks/useIntersection';
 
 export default function Movie(): ReactElement {
-
-    // const { data } = useQuery({
-    //     queryKey: ['top_rated'],
-    //     queryFn: () => getTopRated(({ pageCount: 1 })),
-    //     staleTime: 60000,
-    // })
-
-    const [perPage, setPerPage] = useState<number>(1);
-
     const {
         data,
-        status,
         fetchNextPage,
-        fetchPreviousPage,
         hasNextPage,
-        hasPreviousPage,
         isFetchingNextPage,
+        isFetching
     } = useInfiniteQuery({
         queryKey: ['top_rated'],
         initialPageParam: 1,
         queryFn: ({ pageParam = 1 }) => getTopRated({ pageCount: pageParam }),
-        getNextPageParam: (lastPage, allPages) => {
-            console.log(lastPage.total_pages);
+        getNextPageParam: (lastPage) => {
             return lastPage.total_pages > lastPage.page ? lastPage.page + 1 : undefined;
         },
-        getPreviousPageParam: (firstPage, allPages) => firstPage.page,
+        getPreviousPageParam: (firstPage) => firstPage.page,
+        staleTime: 60 * 1000,
+        gcTime: 80 * 1000
     })
 
-    const ref = useIntersection({
-        onIntersect: (entry: any, observer: any) => {
-            console.log(entry, observer, 'entry')
-            observer.unobserve(entry.target);
-
-            console.log(hasNextPage && !isFetchingNextPage, '조건');
-
-            if (hasNextPage && !isFetchingNextPage) fetchNextPage();
-        }
-    });
+    const { ref, inView } = useInView({
+        threshold: 0,
+        delay: 0,
+    })
 
     useEffect(() => {
-        console.log(data)
-    }, [data])
+        if (inView) ((!isFetching && hasNextPage)) && fetchNextPage();
+    }, [inView, isFetching, hasNextPage, fetchNextPage])
 
 
     return (
-        <Flex gap={0} height={'100%'} width={'100%'} flexDirection={'column'} alignItems={'center'}>
-            <Grid templateColumns={'repeat(4,1fr)'} gap={6}>
-                {data?.pages.map((group, i) => (
-                    <React.Fragment key={i}>
-                        {group?.results?.map((item: MovieTypes) => (
-                            <MovieList key={item.id} data={item} />
-                        ))}
-                    </React.Fragment>
-                ))}
-            </Grid>
-            <Box ref={ref}>
-
-            </Box>
-            {
-                isFetchingNextPage && <Stack justifyContent={'center'} alignItems={'center'} paddingY={10}>
-                    <div>Loading...</div>
-                </Stack>
-            }
-        </Flex>
+        <div>
+            <ChakraProvider>
+                <Flex
+                    flex={1}
+                    justifyContent={'center'}
+                    alignItems={'center'}
+                    maxHeight={'100%'}
+                    overflow={'scroll'}
+                    sx={
+                        {
+                            '::-webkit-scrollbar': {
+                                display: 'none'
+                            }
+                        }
+                    }
+                    paddingY={10}
+                >
+                    <Flex gap={0} height={'100%'} width={'100%'} flexDirection={'column'} alignItems={'center'}>
+                        <Grid templateColumns={'repeat(4,1fr)'} gap={6}>
+                            {data?.pages.map((group, i) => (
+                                <React.Fragment key={i}>
+                                    {group?.results?.map((item: MovieTypes) => (
+                                        <MovieList key={item.id} data={item} />
+                                    ))}
+                                </React.Fragment>
+                            ))}
+                        </Grid>
+                        <Box ref={ref} height={50} />
+                        {
+                            isFetchingNextPage &&
+                            <Stack justifyContent={'center'} alignItems={'center'} paddingY={10}>
+                                <Text>Loading...</Text>
+                            </Stack>
+                        }
+                    </Flex>
+                </Flex>
+            </ChakraProvider>
+        </div>
     )
 }

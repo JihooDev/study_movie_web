@@ -1,4 +1,4 @@
-import ReactQueryProvider from '@/hooks/useReactQuery';
+import ReactQueryProvider from '@/hooks/ReactQueryProvider';
 import ChakraProvider from '@/hooks/useChakraProvider';
 import "./globals.css";
 import Header from './_components/Header';
@@ -11,17 +11,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html>
+    <html lang="ko" translate='no' className="notranslate">
       <body>
-        <ChakraProvider>
-          <ReactQueryProvider>
-            <Stack w={'100%'} gap={0}>
-              <Header />
-              {children}
-              <Footer />
-            </Stack>
-          </ReactQueryProvider>
-        </ChakraProvider>
+        <ReactQueryProvider>
+          {children}
+        </ReactQueryProvider>
       </body>
     </html >
   );

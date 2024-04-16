@@ -2,6 +2,7 @@
 import React, { ReactElement } from 'react';
 import { Box, Button, Card, CardBody, CardFooter, Divider, Heading, Image, Stack, Text } from '@chakra-ui/react';
 import { MovieTypes } from '@/types/movie';
+import Link from 'next/link';
 
 interface Props {
     data: MovieTypes;
@@ -20,7 +21,9 @@ const MovieList = ({ data }: Props): ReactElement => {
                 </Stack>
             </CardBody>
             <CardFooter>
-                <Button colorScheme="blue">Watch Now</Button>
+                <Link href={`/detail/${data.id}`}>
+                    <Button colorScheme="blue">Watch Now</Button>
+                </Link>
             </CardFooter>
         </Card>
     );

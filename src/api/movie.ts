@@ -1,3 +1,5 @@
+import { MovieTypes } from '@/types/movie';
+import { QueryFunction } from '@tanstack/react-query';
 import axios from 'axios';
 
 const tmdb = axios.create({
@@ -15,6 +17,14 @@ export const getTopRated = async ({ pageCount }: { pageCount: number }) => {
     const { data } = await tmdb.get(`/movie/top_rated?page=${pageCount}`);
 
     console.log(`/movie/top_rated?page=${pageCount}`)
+
+    return data;
+}
+
+export const getMovieDetail: QueryFunction<MovieTypes, [_1: string, _2: string]> = async ({ queryKey }) => {
+    const [_, id] = queryKey;
+
+    const { data } = await tmdb.get(`/movie/${id}`);
 
     return data;
 }
