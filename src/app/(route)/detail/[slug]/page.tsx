@@ -1,5 +1,4 @@
-import React, { ReactElement } from 'react'
-import { GetServerSideProps } from 'next'
+import React from 'react'
 import { getMovieDetail } from '@/api/movie'
 import { HydrationBoundary, QueryClient, dehydrate } from '@tanstack/react-query'
 import MovieDetail from '@/app/_components/MovieDetail'
@@ -13,12 +12,12 @@ interface PageProps {
 export default async function Page({ params: { slug } }: PageProps) {
     const id = slug;
     const queryClient = new QueryClient();
-    await queryClient.prefetchQuery({ queryKey: ['movie_detail', id], queryFn: getMovieDetail });
+    await queryClient.prefetchQuery({ queryKey: ['movie_detail', slug], queryFn: getMovieDetail });
     const dehydratedState = dehydrate(queryClient);
 
     return (
         <div>
-            <h1>무비 디테일</h1>
+            <h1>무비 디테일 서버</h1>
             <HydrationBoundary state={dehydratedState}>
                 <MovieDetail id={id} />
             </HydrationBoundary>

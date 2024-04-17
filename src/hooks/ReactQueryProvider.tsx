@@ -10,7 +10,7 @@ const ReactQueryProvider = ({ children }: React.PropsWithChildren) => {
             defaultOptions: {
                 queries: {
                     refetchOnWindowFocus: false,
-                    retry: false,
+                    retry: 1
                 }
             }
         })
@@ -18,9 +18,7 @@ const ReactQueryProvider = ({ children }: React.PropsWithChildren) => {
 
     return (
         <QueryClientProvider client={queryClient}>
-            <div>
-                {children}
-            </div>
+            {children}
             <ReactQueryDevtools initialIsOpen={true} />
         </QueryClientProvider>
     )

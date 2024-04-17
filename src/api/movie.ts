@@ -22,7 +22,8 @@ export const getTopRated = async ({ pageCount }: { pageCount: number }) => {
 }
 
 export const getMovieDetail: QueryFunction<MovieTypes, [_1: string, _2: string]> = async ({ queryKey }) => {
-    const [_, id] = queryKey;
+    console.log('쿼리함수')
+    const [id] = queryKey;
 
     const { data } = await tmdb.get(`/movie/${id}`);
 

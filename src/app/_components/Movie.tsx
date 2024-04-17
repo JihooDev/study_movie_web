@@ -39,43 +39,41 @@ export default function Movie(): ReactElement {
 
 
     return (
-        <div>
-            <ChakraProvider>
-                <Flex
-                    flex={1}
-                    justifyContent={'center'}
-                    alignItems={'center'}
-                    maxHeight={'100%'}
-                    overflow={'scroll'}
-                    sx={
-                        {
-                            '::-webkit-scrollbar': {
-                                display: 'none'
-                            }
+        <ChakraProvider>
+            <Flex
+                flex={1}
+                justifyContent={'center'}
+                alignItems={'center'}
+                maxHeight={'100%'}
+                overflow={'scroll'}
+                sx={
+                    {
+                        '::-webkit-scrollbar': {
+                            display: 'none'
                         }
                     }
-                    paddingY={10}
-                >
-                    <Flex gap={0} height={'100%'} width={'100%'} flexDirection={'column'} alignItems={'center'}>
-                        <Grid templateColumns={'repeat(4,1fr)'} gap={6}>
-                            {data?.pages.map((group, i) => (
-                                <React.Fragment key={i}>
-                                    {group?.results?.map((item: MovieTypes) => (
-                                        <MovieList key={item.id} data={item} />
-                                    ))}
-                                </React.Fragment>
-                            ))}
-                        </Grid>
-                        <Box ref={ref} height={50} />
-                        {
-                            isFetchingNextPage &&
-                            <Stack justifyContent={'center'} alignItems={'center'} paddingY={10}>
-                                <Text>Loading...</Text>
-                            </Stack>
-                        }
-                    </Flex>
+                }
+                paddingY={10}
+            >
+                <Flex gap={0} height={'100%'} width={'100%'} flexDirection={'column'} alignItems={'center'}>
+                    <Grid templateColumns={'repeat(4,1fr)'} gap={6}>
+                        {data?.pages.map((group, i) => (
+                            <React.Fragment key={i}>
+                                {group?.results?.map((item: MovieTypes) => (
+                                    <MovieList key={item.id} data={item} />
+                                ))}
+                            </React.Fragment>
+                        ))}
+                    </Grid>
+                    <Box ref={ref} height={50} />
+                    {
+                        isFetchingNextPage &&
+                        <Stack justifyContent={'center'} alignItems={'center'} paddingY={10}>
+                            <Text>Loading...</Text>
+                        </Stack>
+                    }
                 </Flex>
-            </ChakraProvider>
-        </div>
+            </Flex>
+        </ChakraProvider>
     )
 }
