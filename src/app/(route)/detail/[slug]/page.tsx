@@ -12,12 +12,12 @@ interface PageProps {
 export default async function Page({ params: { slug } }: PageProps) {
     const id = slug;
     const queryClient = new QueryClient();
-    await queryClient.prefetchQuery({ queryKey: ['movie_detail', slug], queryFn: getMovieDetail });
+
+    await queryClient.prefetchQuery({ queryKey: ['movie_detail', id], queryFn: getMovieDetail });
     const dehydratedState = dehydrate(queryClient);
 
     return (
         <div>
-            <h1>무비 디테일 서버</h1>
             <HydrationBoundary state={dehydratedState}>
                 <MovieDetail id={id} />
             </HydrationBoundary>

@@ -21,6 +21,7 @@ export default function MovieDetail({ id }: Props) {
         <ChakraProvider>
             <div>
                 <button onClick={() => router.push('/')}>홈으로</button>
+                {id}
             </div>
         </ChakraProvider>
     )
