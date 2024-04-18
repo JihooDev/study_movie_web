@@ -2,6 +2,9 @@ import React from 'react'
 import { getMovieDetail } from '@/api/movie'
 import { HydrationBoundary, QueryClient, dehydrate } from '@tanstack/react-query'
 import MovieDetail from '@/app/_components/MovieDetail'
+import DetailHeader from './_component/DetailHeader'
+import IntroductionSection from './_component/IntroductionSection'
+import styles from '@/app/_components/movieDetail.module.css'
 
 interface PageProps {
     params: {
@@ -18,8 +21,9 @@ export default async function Page({ params: { slug } }: PageProps) {
 
     return (
         <div>
+            <DetailHeader />
             <HydrationBoundary state={dehydratedState}>
-                <MovieDetail id={id} />
+                <IntroductionSection id={id} />
             </HydrationBoundary>
         </div>
     )
