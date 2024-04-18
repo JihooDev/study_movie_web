@@ -3,7 +3,7 @@ import { QueryFunction } from '@tanstack/react-query';
 import axios from 'axios';
 
 const tmdb = axios.create({
-    baseURL: 'https://api.themoviedb.org/3',
+    baseURL: process.env.NEXT_PUBLIC_BASE_URL,
     headers: {
         Authorization: `Bearer ${process.env.NEXT_PUBLIC_TMDB_ACCESS_TOKEN}`
     },

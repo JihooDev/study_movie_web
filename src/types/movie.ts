@@ -12,5 +12,11 @@ export interface MovieTypes {
     title: string,
     video: boolean,
     vote_average: number,
-    vote_count: number
+    vote_count: number,
+    genres: GenreTypes[]
+}
+
+interface GenreTypes {
+    id: number,
+    name: string
 }

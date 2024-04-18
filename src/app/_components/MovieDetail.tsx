@@ -1,9 +1,12 @@
 "use client"
 
+import { MovieTypes } from '@/types/movie';
 import { ChakraProvider } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import React, { useEffect } from 'react'
+import DetailHeader from '../(route)/detail/[slug]/_component/DetailHeader';
+import IntroductionSection from '../(route)/detail/[slug]/_component/IntroductionSection';
 
 interface Props {
     id: string
@@ -11,18 +14,18 @@ interface Props {
 
 export default function MovieDetail({ id }: Props) {
     const queryClient = useQueryClient();
-    const data = queryClient.getQueryData(['movie_detail', id]);
-    useEffect(() => {
-        console.log(data, id, '쿼리데이터');
-    }, [data])
-    const router = useRouter();
+    const data: MovieTypes | undefined = queryClient.getQueryData(['movie_detail', id]);
+
+    if (!data) {
+        return (
+            <></>
+        )
+    }
 
     return (
         <ChakraProvider>
-            <div>
-                <button onClick={() => router.push('/')}>홈으로</button>
-                {id}
-            </div>
+            <DetailHeader />
+            <IntroductionSection data={data} />
         </ChakraProvider>
     )
 }
