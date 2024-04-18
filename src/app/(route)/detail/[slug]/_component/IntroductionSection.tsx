@@ -5,6 +5,7 @@ import { MovieTypes } from '@/types/movie'
 import { Box, ChakraProvider, Flex, Heading, Text } from '@chakra-ui/react'
 import { useQueryClient } from '@tanstack/react-query';
 import React, { useEffect } from 'react'
+import ActionButtons from './ActionButtons';
 
 interface Props {
     id: string
@@ -15,6 +16,11 @@ export default function IntroductionSection({ id }: Props) {
     const queryClient = useQueryClient();
 
     const data: MovieTypes | undefined = queryClient.getQueryData(['movie_detail', id]);
+
+
+    useEffect(() => {
+        console.log(data);
+    }, [data])
 
     if (!data) {
         return <></>
@@ -50,7 +56,11 @@ export default function IntroductionSection({ id }: Props) {
                                     }
                                 </Flex>
                             </Flex>
-                            <Box marginTop={10}>
+                            <ActionButtons id={id} />
+                            <Text color={COLORS.white} fontStyle={'italic'} mt={5} opacity={.7}>
+                                {data.tagline}
+                            </Text>
+                            <Box mt={5}>
                                 <Heading color={COLORS.white} fontSize={25}>개요</Heading>
                                 <Text color={COLORS.white} marginTop={5}>
                                     {data.overview}
