@@ -16,10 +16,11 @@ export default function IntroductionSection({ id }: Props) {
     const queryClient = useQueryClient();
 
     const data: MovieTypes | undefined = queryClient.getQueryData(['movie_detail', id]);
+    const credits = queryClient.getQueryData(['movie_credits', id]);
 
 
     useEffect(() => {
-        console.log(data);
+        console.log(credits);
     }, [data])
 
     if (!data) {

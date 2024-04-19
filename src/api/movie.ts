@@ -1,4 +1,4 @@
-import { MovieTypes } from '@/types/movie';
+import { MovieCreditsTypes, MovieTypes } from '@/types/movie';
 import { QueryFunction } from '@tanstack/react-query';
 import axios from 'axios';
 
@@ -25,6 +25,14 @@ export const getMovieDetail: QueryFunction<MovieTypes, [_1: string, _2: string]>
     const [_, id] = queryKey;
 
     const { data } = await tmdb.get(`/movie/${id}`);
+
+    return data;
+}
+
+export const getMovieCredits: QueryFunction<MovieCreditsTypes, [_1: string, _2: string]> = async ({ queryKey }) => {
+    const [_, id] = queryKey;
+
+    const { data } = await tmdb.get(`/movie/${id}/credits`);
 
     return data;
 }

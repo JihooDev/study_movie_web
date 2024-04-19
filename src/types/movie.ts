@@ -21,3 +21,40 @@ interface GenreTypes {
     id: number,
     name: string
 }
+
+export interface MovieCreditsTypes {
+    id: number,
+    cast: MovieCreditsCastTypes[],
+    crew: MovieCreditsCrewTypes[]
+}
+
+// 배우
+export interface MovieCreditsCastTypes {
+    adult: boolean,
+    gender: number,
+    id: number,
+    known_for_department: string,
+    name: string,
+    original_name: string,
+    popularity: number,
+    profile_path: string,
+    cast_id: number,
+    character: string,
+    credit_id: string,
+    order: number
+}
+
+// 스태프
+export interface MovieCreditsCrewTypes {
+    adult: boolean;
+    gender: number;
+    id: number;
+    known_for_department: string;
+    name: string;
+    original_name: string;
+    popularity: number;
+    profile_path: string;
+    credit_id: string;
+    department: string;
+    job: string;
+}
