@@ -82,7 +82,7 @@ export default function ActionButtons({ id }: Props) {
             }
             {
                 alertMessage &&
-                <Box position={'absolute'} paddingX={5} paddingY={2} borderRadius={5} backgroundColor={COLORS.black} bottom={-50}>
+                <Box position={'absolute'} zIndex={99} paddingX={5} paddingY={2} borderRadius={5} backgroundColor={COLORS.black} bottom={-50}>
                     <Text color={COLORS.white} fontSize={15}>
                         {alertMessage}
                     </Text>

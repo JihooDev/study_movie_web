@@ -1,11 +1,12 @@
 "use client";
 
 import { COLORS } from '@/assets/colors'
-import { MovieTypes } from '@/types/movie'
+import { MovieCreditsTypes, MovieTypes } from '@/types/movie'
 import { Box, ChakraProvider, Flex, Heading, Text } from '@chakra-ui/react'
 import { useQueryClient } from '@tanstack/react-query';
 import React, { useEffect } from 'react'
 import ActionButtons from './ActionButtons';
+import Link from 'next/link';
 
 interface Props {
     id: string
@@ -16,12 +17,9 @@ export default function IntroductionSection({ id }: Props) {
     const queryClient = useQueryClient();
 
     const data: MovieTypes | undefined = queryClient.getQueryData(['movie_detail', id]);
-    const credits = queryClient.getQueryData(['movie_credits', id]);
+    const credits: MovieCreditsTypes | undefined = queryClient.getQueryData(['movie_credits', id]);
 
-
-    useEffect(() => {
-        console.log(credits);
-    }, [data])
+    const director = credits?.crew.find(crew => crew.job === 'Director')?.name;
 
     if (!data) {
         return <></>
@@ -32,7 +30,7 @@ export default function IntroductionSection({ id }: Props) {
             <Flex width={'full'} height={600} justifyContent={'space-between'} alignItems={'center'}>
                 <Box position={'absolute'} width={'100%'} height={600} left={0} backgroundImage={`https://image.tmdb.org/t/p/w1280/${data.backdrop_path}`} backgroundRepeat={'no-repeat'} backgroundSize={'cover'} zIndex={-2} />
                 <Box position={'absolute'} width={'100%'} height={600} left={0} background={'linear-gradient(to right, rgba(10.5, 31.5, 52.5, 1) calc((50vw - 170px) - 340px), rgba(10.5, 31.5, 52.5, 0.84) 50%, rgba(10.5, 31.5, 52.5, 0.84) 100%);'} zIndex={-1} />
-                <Flex width={'full'} height={600} paddingX={5} paddingY={10}>
+                <Flex width={'full'} height={600} paddingX={10} paddingY={10}>
                     <Flex width={'30%'} height={'full'} justifyContent={'center'} alignItems={'center'} padding={5}>
                         <Flex width={'100%'} height={'100%'} justifyContent={'center'} alignItems={'center'}>
                             <img src={`https://image.tmdb.org/t/p/w300/${data.poster_path}`} style={{ borderRadius: 15 }} />
@@ -67,6 +65,16 @@ export default function IntroductionSection({ id }: Props) {
                                     {data.overview}
                                 </Text>
                             </Box>
+                            <Flex mt={10}>
+                                <Box>
+                                    <Heading color={COLORS.white} fontSize={16} opacity={.7}>감독</Heading>
+                                    <Link href={`#`}>
+                                        <Text color={COLORS.white} fontSize={13} marginTop={2}>
+                                            {director}
+                                        </Text>
+                                    </Link>
+                                </Box>
+                            </Flex>
                         </Box>
                     </Flex>
                 </Flex>

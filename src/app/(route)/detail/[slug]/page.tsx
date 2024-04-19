@@ -3,6 +3,7 @@ import { getMovieCredits, getMovieDetail } from '@/api/movie'
 import { HydrationBoundary, QueryClient, dehydrate } from '@tanstack/react-query'
 import DetailHeader from './_component/DetailHeader'
 import IntroductionSection from './_component/IntroductionSection'
+import ActorSection from './_component/ActorSection'
 
 interface PageProps {
     params: {
@@ -23,6 +24,7 @@ export default async function Page({ params: { slug } }: PageProps) {
             <DetailHeader />
             <HydrationBoundary state={dehydratedState}>
                 <IntroductionSection id={id} />
+                <ActorSection id={id} />
             </HydrationBoundary>
         </div>
     )
