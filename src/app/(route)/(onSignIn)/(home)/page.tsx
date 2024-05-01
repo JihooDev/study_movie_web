@@ -1,16 +1,10 @@
-import { Flex } from "@chakra-ui/react";
-import Image from "next/image";
-import Movie from "../../../_components/Movie";
-import styles from './home.module.css';
-import Header from "@/app/_components/Header";
 import Banner from "./_component/Banner";
+import styles from './home.module.css';
 
-function Home() {
+export default function Home() {
     return (
-        <div>
+        <div className={styles.container}>
             <Banner />
         </div>
     );
 }
-
-export default Home;

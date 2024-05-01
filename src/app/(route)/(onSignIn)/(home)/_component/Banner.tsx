@@ -1,15 +1,80 @@
 "use client"
 
+import { getTrendingMovie } from '@/api/movie'
+import CustomButton from '@/app/_components/CustomButton'
+import Loading from '@/app/_components/Loading'
 import { COLORS } from '@/assets/colors'
-import { Box, ChakraProvider, Flex } from '@chakra-ui/react'
+import { genreFilter } from '@/menus/menu'
+import { TrendingMovieResponse } from '@/types/responseType'
+import { Box, ChakraProvider, Flex, Text } from '@chakra-ui/react'
+import { useQuery } from '@tanstack/react-query'
 import Image from 'next/image'
-import React from 'react'
+import { useRouter } from 'next/navigation'
+import React, { useEffect, useState } from 'react'
 
 export default function Banner() {
+
+    const [randomMovieId, setRandomMovieId] = useState<number | null>(null);
+    const router = useRouter();
+    const { data, isLoading } = useQuery<TrendingMovieResponse>({
+        queryKey: ['getTrendingMovie'],
+        queryFn: getTrendingMovie,
+        enabled: !!randomMovieId,
+    })
+
+    useEffect(() => {
+        const random_0_19 = Math.floor(Math.random() * 19);
+
+        setRandomMovieId(random_0_19);
+    }, [])
+
+    useEffect(() => {
+        console.log(data?.results);
+    }, [data])
+
+    const movie = data?.results[randomMovieId as number];
+
+    if (!movie) {
+        return (
+            <Loading />
+        )
+    }
+
+    const onNavigateMovieDetail = () => {
+        router.push(`/detail/${movie.id}`);
+    }
+
     return (
         <ChakraProvider>
-            <Flex w={'full'} h={300} backgroundColor={COLORS.white}>
-                <Image src={require('@/assets/src/main.png')} alt='main' />
+            <Flex w={'full'} h={450} backgroundColor={COLORS.black} position={'relative'}>
+                {
+                    isLoading ?
+                        <Loading />
+                        :
+                        <>
+                            <img
+                                src={`https://image.tmdb.org/t/p/w1280/${data?.results[randomMovieId as number].backdrop_path}`}
+                                alt="메인 배경 이미지"
+                                style={{ filter: 'brightness(0.5)', position: 'absolute', width: '100%', height: '100%', zIndex: 0 }}
+                            />
+                            <Flex w={'full'} h={'full'} flexDirection={'column'} justifyContent={'flex-end'} zIndex={1} px={5} py={10}>
+                                <Box>
+                                    <Text color={COLORS.white} fontSize={25} fontWeight={'bold'} mb={5}>
+                                        {movie.title}
+                                    </Text>
+                                    <Text color={COLORS.white} mb={5}>
+                                        {movie.release_date.split('-')[0]} | {genreFilter.filter(value => value.type === movie.genre_ids[0])[0].title}
+                                    </Text>
+                                    <CustomButton onClick={onNavigateMovieDetail}>
+                                        <Text color={COLORS.white}>
+                                            자세히 보기
+                                        </Text>
+                                    </CustomButton>
+                                </Box>
+                            </Flex>
+                        </>
+                }
+
             </Flex>
         </ChakraProvider>
     )
