@@ -5,8 +5,8 @@ import CustomButton from '@/app/_components/CustomButton'
 import Loading from '@/app/_components/Loading'
 import { COLORS } from '@/assets/colors'
 import { genreFilter } from '@/menus/menu'
-import { TrendingMovieResponse } from '@/types/responseType'
-import { Box, ChakraProvider, Flex, Text } from '@chakra-ui/react'
+import { MovieResponse } from '@/types/responseType'
+import { Box, Center, ChakraProvider, Flex, Text } from '@chakra-ui/react'
 import { useQuery } from '@tanstack/react-query'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
@@ -16,7 +16,7 @@ export default function Banner() {
 
     const [randomMovieId, setRandomMovieId] = useState<number | null>(null);
     const router = useRouter();
-    const { data, isLoading } = useQuery<TrendingMovieResponse>({
+    const { data, isLoading } = useQuery<MovieResponse>({
         queryKey: ['getTrendingMovie'],
         queryFn: getTrendingMovie,
         enabled: !!randomMovieId,
@@ -36,7 +36,9 @@ export default function Banner() {
 
     if (!movie) {
         return (
-            <Loading />
+            <Center minH={450}>
+                <Loading />
+            </Center>
         )
     }
 
@@ -74,7 +76,6 @@ export default function Banner() {
                             </Flex>
                         </>
                 }
-
             </Flex>
         </ChakraProvider>
     )

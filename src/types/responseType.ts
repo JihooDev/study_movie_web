@@ -1,6 +1,6 @@
 import { MovieTypes } from "./movie";
 
-export interface TrendingMovieResponse {
+export interface MovieResponse {
     page: number,
     results: MovieTypes[],
     total_pages: number,

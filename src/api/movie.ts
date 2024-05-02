@@ -38,7 +38,13 @@ export const getMovies = async ({ pageCount, url }: { pageCount: number, url?: s
 }
 
 export const getTrendingMovie = async () => {
-    const { data } = await tmdb.get('trending/movie/day');
+    const { data } = await tmdb.get('/trending/movie/day');
+
+    return data;
+}
+
+export const getNowPlayingMovie = async () => {
+    const { data } = await tmdb.get('movie/now_playing');
 
     return data;
 }
