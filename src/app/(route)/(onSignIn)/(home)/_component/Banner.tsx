@@ -2,6 +2,7 @@
 
 import { getTrendingMovie } from '@/api/movie'
 import CustomButton from '@/app/_components/CustomButton'
+import LikeButton from '@/app/_components/LikeButton'
 import Loading from '@/app/_components/Loading'
 import { COLORS } from '@/assets/colors'
 import { genreFilter } from '@/menus/menu'
@@ -67,11 +68,16 @@ export default function Banner() {
                                     <Text color={COLORS.white} mb={5}>
                                         {movie.release_date.split('-')[0]} | {genreFilter.filter(value => value.type === movie.genre_ids[0])[0].title}
                                     </Text>
-                                    <CustomButton onClick={onNavigateMovieDetail}>
-                                        <Text color={COLORS.white}>
-                                            자세히 보기
-                                        </Text>
-                                    </CustomButton>
+                                    <Flex>
+                                        <CustomButton onClick={onNavigateMovieDetail}>
+                                            <Text color={COLORS.white}>
+                                                자세히 보기
+                                            </Text>
+                                        </CustomButton>
+                                        <Box ml={5}>
+                                            <LikeButton id={data?.results[randomMovieId as number].id} />
+                                        </Box>
+                                    </Flex>
                                 </Box>
                             </Flex>
                         </>

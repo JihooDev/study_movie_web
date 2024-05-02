@@ -48,3 +48,9 @@ export const getNowPlayingMovie = async () => {
 
     return data;
 }
+
+export const getPopularMovie = async () => {
+    const { data } = await tmdb.get('movie/popular');
+
+    return data;
+}

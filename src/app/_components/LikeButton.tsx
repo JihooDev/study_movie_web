@@ -9,7 +9,8 @@ interface Props {
 
 export default function LikeButton({ id }: Props) {
 
-    const onLikeMovie = () => {
+    const onLikeMovie = (e: React.MouseEvent) => {
+        e.stopPropagation();
         console.log(id, 'Like Movie')
     }
 
