@@ -21,7 +21,7 @@ export default function MovieCard({ movie }: Props) {
     }
 
     return (
-        <Flex w={300} flexDirection={'column'} h={'330px'} borderRadius={15} borderColor={COLORS.gray} borderWidth={1} overflow={'hidden'} position={'relative'} onClick={onNavigateMovieDetail} cursor={'pointer'}>
+        <Flex w={280} flexDirection={'column'} h={'330px'} borderRadius={15} borderColor={COLORS.gray} borderWidth={1} overflow={'hidden'} position={'relative'} onClick={onNavigateMovieDetail} cursor={'pointer'}>
             <img
                 src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
                 alt={movie.title}

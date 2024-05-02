@@ -2,11 +2,13 @@
     width: 100%;
     display: flex;
     min-height: 100dvh;
-    padding: 0 8%;
+    padding: 0 5%;
+    background-color: #21201E;
     justify-content: space-between;
 }
 
 .page_container {
     display: flex;
     flex: 1;
+    background-color: #21201E;
 }
