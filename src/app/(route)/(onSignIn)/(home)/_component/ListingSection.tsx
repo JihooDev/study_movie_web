@@ -29,19 +29,21 @@ export default function ListingSection({ queryKey, title }: Props) {
                 >
                     {title}
                 </Text>
-                <Swiper
-                    spaceBetween={50}
-                    slidesPerView={1}
-                    loop={true}
-                >
-                    {
-                        data?.results.map((movie) => (
-                            <SwiperSlide key={movie.id}>
-                                <MovieCard movie={movie} />
-                            </SwiperSlide>
-                        ))
-                    }
-                </Swiper>
+                <Box pr={5} mt={5}>
+                    <Swiper
+                        spaceBetween={5} //슬라이드간 거리
+                        slidesPerView={3.5}
+                        loop={true}
+                    >
+                        {
+                            data?.results.map((movie, index) => (
+                                <SwiperSlide key={index}>
+                                    <MovieCard movie={movie} />
+                                </SwiperSlide>
+                            ))
+                        }
+                    </Swiper>
+                </Box>
             </Box>
         </ChakraProvider>
     )

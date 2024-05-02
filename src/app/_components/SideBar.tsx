@@ -44,7 +44,7 @@ export default function SideBar() {
 
     return (
         <ChakraProvider>
-            <Flex minW={'20%'} flexDirection={'column'} backgroundColor={COLORS.black} position={'sticky'} top={0} h={'full'}>
+            <Flex minW={'20%'} h={'100vh'} flexDirection={'column'} backgroundColor={COLORS.black} position={'sticky'} top={0}>
                 <Center w={'full'} h={200}>
                     <CoffieIcon />
                     <Text
