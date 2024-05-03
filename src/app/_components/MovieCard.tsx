@@ -22,11 +22,15 @@ export default function MovieCard({ movie }: Props) {
 
     return (
         <Flex w={280} flexDirection={'column'} h={'330px'} borderRadius={15} borderColor={COLORS.gray} borderWidth={1} overflow={'hidden'} position={'relative'} onClick={onNavigateMovieDetail} cursor={'pointer'}>
-            <img
-                src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
-                alt={movie.title}
-                style={{ position: 'absolute', width: '100%', height: '100%', zIndex: 0 }}
-            />
+            {
+                movie.poster_path ?
+                    <img
+                        src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
+                        alt={movie.title}
+                        style={{ position: 'absolute', width: '100%', height: '100%', zIndex: 0 }}
+                    />
+                    : <Box w={'full'} h={'full'} backgroundColor={COLORS.gray} />
+            }
             <Flex flex={1} p={5} zIndex={1} justifyContent={'flex-end'}>
                 <LikeButton id={movie.id} />
             </Flex>
@@ -35,7 +39,7 @@ export default function MovieCard({ movie }: Props) {
                     {movie.title}
                 </Text>
                 <Text color={COLORS.white} fontWeight={'bold'} fontSize={14} mt={3}>
-                    {movie.release_date.split('-')[0]} | {genreFilter.filter(value => value.type === movie.genre_ids[0])[0].title}
+                    {movie.release_date.split('-')[0]} | {genreFilter.filter(value => value.type === movie.genre_ids[0])[0]?.title}
                 </Text>
             </Flex>
         </Flex>

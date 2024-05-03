@@ -26,7 +26,9 @@ export default function Banner() {
     useEffect(() => {
         const random_0_19 = Math.floor(Math.random() * 19);
 
-        setRandomMovieId(random_0_19);
+        const id = random_0_19 === 0 ? 1 : random_0_19;
+
+        setRandomMovieId(id);
     }, [])
 
     useEffect(() => {
