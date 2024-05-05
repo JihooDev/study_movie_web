@@ -1,20 +1,19 @@
 "use client"
 
-import { getTrendingMovie } from '@/api/movie'
-import CustomButton from '@/app/_components/CustomButton'
-import LikeButton from '@/app/_components/LikeButton'
-import Loading from '@/app/_components/Loading'
-import { COLORS } from '@/assets/colors'
-import { genreFilter } from '@/menus/menu'
-import { MovieResponse } from '@/types/responseType'
-import { Box, Center, ChakraProvider, Flex, Text } from '@chakra-ui/react'
-import { useQuery } from '@tanstack/react-query'
-import Image from 'next/image'
-import { useRouter } from 'next/navigation'
-import React, { useEffect, useState } from 'react'
+import { getTrendingMovie } from '@/api/movie';
+import CustomButton from '@/app/_components/CustomButton';
+import LikeButton from '@/app/_components/LikeButton';
+import Loading from '@/app/_components/Loading';
+import { COLORS } from '@/assets/colors';
+import { genreFilter } from '@/menus/menu';
+import { MovieResponse } from '@/types/responseType';
+import { Box, Center, ChakraProvider, Flex, Text } from '@chakra-ui/react';
+import { useQuery } from '@tanstack/react-query';
+import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import React, { useEffect, useState } from 'react';
 
 export default function Banner() {
-
     const [randomMovieId, setRandomMovieId] = useState<number | null>(null);
     const router = useRouter();
     const { data, isLoading } = useQuery<MovieResponse>({
@@ -25,17 +24,12 @@ export default function Banner() {
 
     useEffect(() => {
         const random_0_19 = Math.floor(Math.random() * 19);
-
         const id = random_0_19 === 0 ? 1 : random_0_19;
-
         setRandomMovieId(id);
     }, [])
 
-    useEffect(() => {
-        console.log(data?.results);
-    }, [data])
-
     const movie = data?.results[randomMovieId as number];
+
 
     if (!movie) {
         return (
