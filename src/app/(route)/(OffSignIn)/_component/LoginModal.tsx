@@ -22,6 +22,8 @@ export default function LoginModal({ isOpen, onClose }: ModalProps) {
             toast('아이디와 비밀번호를 입력해주세요', { type: 'error' });
             return;
         }
+
+
     }
 
     return (
