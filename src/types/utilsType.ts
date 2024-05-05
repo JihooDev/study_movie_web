@@ -10,3 +10,9 @@ export interface IconTypes {
     color?: string,
     size?: number
 }
+
+export interface ModalProps {
+    isOpen: boolean;
+    onClose: () => void;
+    onSubmit?: () => void;
+}

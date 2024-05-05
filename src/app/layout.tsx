@@ -4,6 +4,8 @@ import "./globals.css";
 import 'dayjs/locale/ko';
 import dayjs from 'dayjs';
 import { Poppins } from 'next/font/google';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 dayjs.locale('ko');
 
@@ -24,6 +26,7 @@ export default function RootLayout({
     <html lang="ko" translate='no' className="notranslate">
       <body className={poppins.className}>
         <ReactQueryProvider>
+          <ToastContainer />
           {children}
         </ReactQueryProvider>
       </body>

@@ -2,11 +2,21 @@
 import { COLORS } from '@/assets/colors';
 import CoffieIcon from '@/assets/src/CoffieIcon';
 import { Button, ChakraProvider, Flex, Text } from '@chakra-ui/react';
-import React from 'react'
+import React, { useState } from 'react'
+import LoginModal from './LoginModal';
 
 export default function ContentSection() {
+
+    const [signInModal, setSignInModal] = useState<boolean>(false);
+    const [signUpModal, setSignUpModal] = useState<boolean>(false);
+
     return (
         <ChakraProvider>
+            <LoginModal
+                isOpen={signInModal}
+                onClose={() => setSignInModal(false)}
+                onSubmit={() => console.log('submit')}
+            />
             <Flex justifyContent={'center'} flexDirection={'column'} alignItems={'center'} backgroundColor={COLORS.black} p={10} borderRadius={'xl'}>
                 <Flex alignItems={'center'}>
                     <CoffieIcon color={COLORS.white} />
@@ -17,7 +27,7 @@ export default function ContentSection() {
                 <Text color={COLORS.white} my={5}>
                     Enjoy the newest movies
                 </Text>
-                <Button w={200} backgroundColor={COLORS.pupple} _hover={{ backgroundColor: COLORS.light_purple }} color={COLORS.white}>
+                <Button w={200} backgroundColor={COLORS.pupple} _hover={{ backgroundColor: COLORS.light_purple }} color={COLORS.white} onClick={() => setSignInModal(true)}>
                     Login
                 </Button>
                 <Flex mt={5}>
