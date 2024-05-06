@@ -4,9 +4,9 @@ import CoffieIcon from '@/assets/src/CoffieIcon';
 import { Button, ChakraProvider, Flex, Text } from '@chakra-ui/react';
 import React, { useState } from 'react'
 import LoginModal from './LoginModal';
+import RegisterModal from './RegisterModal';
 
 export default function ContentSection() {
-
     const [signInModal, setSignInModal] = useState<boolean>(false);
     const [signUpModal, setSignUpModal] = useState<boolean>(false);
 
@@ -15,6 +15,11 @@ export default function ContentSection() {
             <LoginModal
                 isOpen={signInModal}
                 onClose={() => setSignInModal(false)}
+                onSubmit={() => console.log('submit')}
+            />
+            <RegisterModal
+                isOpen={signUpModal}
+                onClose={() => setSignUpModal(false)}
                 onSubmit={() => console.log('submit')}
             />
             <Flex justifyContent={'center'} flexDirection={'column'} alignItems={'center'} backgroundColor={COLORS.black} p={10} borderRadius={'xl'}>
@@ -34,7 +39,7 @@ export default function ContentSection() {
                     <Text color={COLORS.white} mr={2}>
                         Don't have an account?
                     </Text>
-                    <Text color={COLORS.white} fontWeight={'bold'} cursor={'pointer'}>
+                    <Text color={COLORS.white} fontWeight={'bold'} cursor={'pointer'} onClick={() => setSignUpModal(true)}>
                         Sign Up
                     </Text>
                 </Flex>
