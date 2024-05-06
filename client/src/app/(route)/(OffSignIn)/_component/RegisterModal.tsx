@@ -20,8 +20,6 @@ export default function RegisterModal({ isOpen, onClose }: ModalProps) {
         const pw = pwRef.current?.value.trim();
         const pwCheck = pwCheckRef.current?.value.trim();
 
-        console.log(id, pw, pwCheck);
-
         if (!id || !pw) {
             toast('모든 정보를 입력하세요', { type: 'error' });
             return;
