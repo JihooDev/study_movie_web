@@ -1,6 +1,7 @@
 import { User as IUser } from "../@types/SchemaTypes"
 import { Request, Response } from "express";
 import { User } from "../model/userModel";
+import bcrypt from 'bcrypt';
 import { IResponse } from "../@types/ResponseTypes";
 
 const register = async (req: Request, res: Response) => {
@@ -16,11 +17,16 @@ const register = async (req: Request, res: Response) => {
             })
         }
 
+        // 비밀번호 암호화 작업
+        const hashPassword = await bcrypt.hash(password as string, 10);
+
         const user = await User.create({
             id,
             nickname,
-            password,
+            password: hashPassword,
         });
+
+        delete user?.password;
 
         return res.status(200).json({
             data: user,
@@ -39,7 +45,9 @@ const login = async (req: Request, res: Response) => {
     try {
         const { id, password }: IUser = req.body;
 
-        const user = await User.findOne({ id, password });
+        const user = await User.findOne({ id });
+
+        const isPasswordValid = await bcrypt.compare(password as string, user?.password as string);
 
         if (!user) {
             return res.status(400).json({
@@ -47,6 +55,15 @@ const login = async (req: Request, res: Response) => {
                 status: 400,
             })
         }
+
+        if (!isPasswordValid) {
+            return res.status(400).json({
+                message: 'Password is invalid',
+                status: 400,
+            })
+        }
+
+        delete user?.password;
 
         return res.status(200).json({
             data: user,
@@ -60,4 +77,4 @@ const login = async (req: Request, res: Response) => {
     }
 }
 
-export { register };
+export { register, login };
