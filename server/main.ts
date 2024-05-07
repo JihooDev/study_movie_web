@@ -1,11 +1,16 @@
 import * as mongoose from 'mongoose';
-import express from 'express';
+import express, { Express } from 'express';
 import dotenv from 'dotenv';
+import { router as userRoute } from './routes/userRoute';
 
 dotenv.config();
 
 const PORT = process.env.PORT;
-const app = express();
+const app: Express = express();
+
+app.use(express.json());
+
+app.use('/user', userRoute)
 
 app.listen(PORT, () => {
     runMongoDB();

@@ -13,14 +13,16 @@ export default function RegisterModal({ isOpen, onClose }: ModalProps) {
     const idRef = useRef<HTMLInputElement>(null);
     const pwRef = useRef<HTMLInputElement>(null);
     const pwCheckRef = useRef<HTMLInputElement>(null);
+    const nicknameRef = useRef<HTMLInputElement>(null);
 
     const onSubmit = () => {
         // 입력 값 current.value로 가져와서 trim()으로 공백 제거
         const id = idRef.current?.value.trim();
         const pw = pwRef.current?.value.trim();
         const pwCheck = pwCheckRef.current?.value.trim();
+        const nickname = nicknameRef.current?.value.trim();
 
-        if (!id || !pw) {
+        if (!id || !pw || !nickname) {
             toast('모든 정보를 입력하세요', { type: 'error' });
             return;
         }
@@ -52,6 +54,12 @@ export default function RegisterModal({ isOpen, onClose }: ModalProps) {
                     <ModalCloseButton />
                     <ModalBody>
                         <Box w={'full'}>
+                            <Input
+                                placeholder='닉네임'
+                                ref={nicknameRef}
+                            />
+                        </Box>
+                        <Box w={'full'} mt={5}>
                             <Input
                                 placeholder='아이디'
                                 ref={idRef}
