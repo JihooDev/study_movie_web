@@ -1,13 +1,45 @@
 "use client"
 
+import { postRegister } from '@/api/user'
 import { COLORS } from '@/assets/colors'
 import CoffieIcon from '@/assets/src/CoffieIcon'
+import { ServerResponse } from '@/types/responseType'
 import { ModalProps } from '@/types/utilsType'
 import { Box, Button, ChakraProvider, Flex, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Text } from '@chakra-ui/react'
+import { useMutation } from '@tanstack/react-query'
+import { AxiosError } from 'axios'
 import React, { useRef } from 'react'
 import { toast } from 'react-toastify'
 
 export default function RegisterModal({ isOpen, onClose }: ModalProps) {
+
+    const { mutate, isPending } = useMutation({
+        mutationKey: ['register'],
+        mutationFn: postRegister,
+        onSuccess: (data: ServerResponse) => {
+            if (data.status === 200) {
+                toast('회원가입 성공 / 로그인을 진행해주세요', { type: 'success' });
+                onClose();
+                console.log(data, '회원가입 성공');
+            }
+        },
+        onError: (error) => {
+            if (error instanceof AxiosError && error.response) {
+                switch (error?.response.data.message) {
+                    case 'User already exists':
+                        toast('이미 존재하는 아이디입니다', { type: 'error' });
+                        break;
+                    case 'Nickname already exists':
+                        toast('이미 존재하는 닉네임입니다', { type: 'error' });
+                        break;
+                    default:
+                        toast('회원가입에 실패했습니다', { type: 'error' });
+                        break;
+                }
+                console.log(error.response.data.message, '회원가입 에러');
+            }
+        }
+    })
 
     // 입력시 rerender를 방지하기 위해 useRef 사용
     const idRef = useRef<HTMLInputElement>(null);
@@ -36,6 +68,12 @@ export default function RegisterModal({ isOpen, onClose }: ModalProps) {
             toast('비밀번호가 일치하지 않습니다', { type: 'error' });
             return;
         }
+
+        mutate({
+            id,
+            password: pw,
+            nickname
+        });
     }
 
     return (
@@ -81,7 +119,7 @@ export default function RegisterModal({ isOpen, onClose }: ModalProps) {
                         </Box>
                     </ModalBody>
                     <ModalFooter>
-                        <Button colorScheme='whatsapp' onClick={onSubmit}>
+                        <Button colorScheme='whatsapp' onClick={onSubmit} isLoading={isPending}>
                             회원가입
                         </Button>
                     </ModalFooter>

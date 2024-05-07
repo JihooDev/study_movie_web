@@ -1,18 +1,29 @@
 import { User as IUser } from "../@types/SchemaTypes"
-import { Request, Response } from "express";
+import { Request, Response, } from "express";
 import { User } from "../model/userModel";
 import bcrypt from 'bcrypt';
 import { IResponse } from "../@types/ResponseTypes";
+import { NextFunction } from "express";
 
-const register = async (req: Request, res: Response) => {
+const register = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { id, nickname, password }: IUser = req.body;
 
-        const userCheck = await User.findOne({ $or: [{ id }, { nickname }] });
+        const userCheck = await User.findOne({ id });
+        const nicknameCheck = await User.findOne({ nickname })
+
+        console.log(userCheck, 'userCheck');
 
         if (userCheck) {
             return res.status(400).json({
                 message: 'User already exists',
+                status: 400,
+            })
+        }
+
+        if (nicknameCheck) {
+            return res.status(400).json({
+                message: 'Nickname already exists',
                 status: 400,
             })
         }
@@ -34,14 +45,14 @@ const register = async (req: Request, res: Response) => {
             status: 200,
         });
     } catch (error) {
-        res.status(200).json({
-            message: 'User already exists',
-            status: 400,
-        })
+        console.error(error, '에러');
+        next();
+    } finally {
+        console.log('회원가입 완료');
     }
 }
 
-const login = async (req: Request, res: Response) => {
+const login = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { id, password }: IUser = req.body;
 
@@ -70,10 +81,9 @@ const login = async (req: Request, res: Response) => {
             status: 200,
         });
     } catch (error) {
-        res.status(400).json({
-            message: 'User not found',
-            status: 400,
-        })
+        next();
+    } finally {
+        console.log('로그인 완료');
     }
 }
 
