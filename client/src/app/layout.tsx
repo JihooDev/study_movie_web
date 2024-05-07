@@ -6,6 +6,7 @@ import dayjs from 'dayjs';
 import { Poppins } from 'next/font/google';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import AuthSession from './_components/AuthSession';
 
 dayjs.locale('ko');
 
@@ -25,10 +26,12 @@ export default function RootLayout({
   return (
     <html lang="ko" translate='no' className="notranslate">
       <body className={poppins.className}>
-        <ReactQueryProvider>
-          <ToastContainer />
-          {children}
-        </ReactQueryProvider>
+        <AuthSession>
+          <ReactQueryProvider>
+            <ToastContainer />
+            {children}
+          </ReactQueryProvider>
+        </AuthSession>
       </body>
     </html >
   );

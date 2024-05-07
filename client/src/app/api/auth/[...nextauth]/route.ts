@@ -22,7 +22,10 @@ const handler = NextAuth({
                     password
                 })
 
+
                 const data = auth.data;
+
+                console.log(data);
 
                 if (data) {
                     return data
