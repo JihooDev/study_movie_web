@@ -1,3 +1,4 @@
+import axios from 'axios';
 import NextAuth from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials';
 import GoogleProvider from 'next-auth/providers/google';
@@ -7,23 +8,29 @@ const handler = NextAuth({
         CredentialsProvider({
             name: "Credentials",
             credentials: {
-                username: { label: "Username", type: "text", placeholder: "jsmith" },
+                id: { label: "Username", type: "text" },
                 password: { label: "Password", type: "password" }
             },
             async authorize(credentials, req) {
-                const user = { id: "1", name: "J Smith", email: "jsmith@example.com" }
+                // credentials 타입에러
+                // tsconfig에서 strict를 false로 바꾸면 해결됨
+                // https://github.com/nextauthjs/next-auth/issues/2701
+                const { id, password } = credentials;
 
-                if (user) {
-                    return user
+                const auth = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/user/login`, {
+                    id,
+                    password
+                })
+
+                const data = auth.data;
+
+                if (data) {
+                    return data
                 } else {
                     return null
                 }
             }
         }),
-        // GoogleProvider({
-        //     // clientId: process.env.GOOGLE_ID,
-        //     // clientSecret: process.env.GOOGLE_SECRET
-        // })
     ]
 })
 
