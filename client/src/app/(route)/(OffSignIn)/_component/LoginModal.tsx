@@ -59,7 +59,7 @@ export default function LoginModal({ isOpen, onClose }: ModalProps) {
     const idRef = useRef<HTMLInputElement>(null);
     const pwRef = useRef<HTMLInputElement>(null);
 
-    const onSubmit = () => {
+    const onSubmit = async () => {
         // 입력 값 current.value로 가져와서 trim()으로 공백 제거
         const id = idRef.current?.value.trim();
         const pw = pwRef.current?.value.trim();
@@ -69,10 +69,29 @@ export default function LoginModal({ isOpen, onClose }: ModalProps) {
             return;
         }
 
-        mutate({
+        const sign = await signIn('credentials', {
             id,
-            password: pw
+            password: pw,
+            redirect: false
         })
+
+        console.log(sign, '로그인')
+
+        if (sign?.error) {
+            toast('로그인에 실패했습니다', { type: 'error' });
+            return;
+        }
+
+        if (sign.ok) {
+            toast('로그인 성공', { type: 'success' });
+            onClose();
+            router.replace('/home');
+        }
+
+        // mutate({
+        //     id,
+        //     password: pw
+        // })
     }
 
     return (

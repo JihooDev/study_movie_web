@@ -12,8 +12,6 @@ const register = async (req: Request, res: Response, next: NextFunction) => {
         const userCheck = await User.findOne({ id });
         const nicknameCheck = await User.findOne({ nickname })
 
-        console.log(userCheck, 'userCheck');
-
         if (userCheck) {
             return res.status(400).json({
                 message: 'User already exists',
@@ -58,8 +56,6 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
 
         const user = await User.findOne({ id });
 
-        const isPasswordValid = await bcrypt.compare(password as string, user?.password as string);
-
         if (!user) {
             return res.status(400).json({
                 message: 'User not found',
@@ -67,9 +63,11 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
             })
         }
 
+        const isPasswordValid = await bcrypt.compare(password as string, user?.password as string);
+
         if (!isPasswordValid) {
             return res.status(400).json({
-                message: 'Password is invalid',
+                message: 'User not found',
                 status: 400,
             })
         }
@@ -79,8 +77,9 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
         return res.status(200).json({
             data: user,
             status: 200,
-        });
+        })
     } catch (error) {
+        console.log(error);
         next();
     } finally {
         console.log('로그인 완료');

@@ -45,7 +45,7 @@ export default function Header() {
                 onMouseLeave={() => setIsOpen('')}
             >
                 <Flex alignItems="center" mr={5} h={'full'}>
-                    <Flex alignItems={'center'} mr={5} cursor={'pointer'} onClick={() => router.push('/')}>
+                    <Flex alignItems={'center'} mr={5} cursor={'pointer'} onClick={() => router.push('/home')}>
                         <CoffieIcon />
                         <Text
                             color={COLORS.white}

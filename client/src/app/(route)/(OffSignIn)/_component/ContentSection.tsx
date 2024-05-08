@@ -10,11 +10,6 @@ import { useSession } from 'next-auth/react';
 export default function ContentSection() {
     const [signInModal, setSignInModal] = useState<boolean>(false);
     const [signUpModal, setSignUpModal] = useState<boolean>(false);
-    const session = useSession();
-
-    useEffect(() => {
-        console.log(session, '세션')
-    }, [session])
 
     return (
         <ChakraProvider>

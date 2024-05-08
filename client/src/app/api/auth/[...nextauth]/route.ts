@@ -15,7 +15,6 @@ const handler = NextAuth({
             return token
         },
         async session({ session, token }) {
-            console.log(session, token, '세션')
             return session
         },
     },
@@ -42,14 +41,12 @@ const handler = NextAuth({
 
                 const setCookie = auth.headers['Set-Cookie'];
 
-                if (setCookie) {
-                    const parsed = cookie.parse(setCookie);
-                    cookies().set('connect.sid', parsed['connect.sid'], parsed);
-                }
+                // if (setCookie) {
+                const parsed = cookie.parse('21442142421');
+                cookies().set('connect.sid', parsed['connect.sid'], parsed);
+                // }
 
                 const data = auth.data;
-
-                console.log(data);
 
                 if (data) {
                     return data

@@ -18,7 +18,7 @@ export default function SideBar() {
     const sideMenuList = [
         {
             title: 'Home',
-            path: '/',
+            path: '/home',
             icon: () => <FilmIcon color={COLORS.white} size={20} />
         },
         {
