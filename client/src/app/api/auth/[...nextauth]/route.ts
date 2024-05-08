@@ -2,8 +2,26 @@ import axios from 'axios';
 import NextAuth from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials';
 import GoogleProvider from 'next-auth/providers/google';
+import { cookies } from 'next/headers';
+import cookie from 'cookie';
 
 const handler = NextAuth({
+    secret: process.env.NEXT_AUTH_SECRET,
+    callbacks: {
+        async jwt({ token, account }) {
+            if (account && account.type === 'credentials') {
+                token.userId = account.providerAccountId
+            }
+            return token
+        },
+        async session({ session, token }) {
+            console.log(session, token, '세션')
+            return session
+        },
+    },
+    pages: {
+        signIn: '/'
+    },
     providers: [
         CredentialsProvider({
             name: "Credentials",
@@ -22,6 +40,12 @@ const handler = NextAuth({
                     password
                 })
 
+                const setCookie = auth.headers['Set-Cookie'];
+
+                if (setCookie) {
+                    const parsed = cookie.parse(setCookie);
+                    cookies().set('connect.sid', parsed['connect.sid'], parsed);
+                }
 
                 const data = auth.data;
 

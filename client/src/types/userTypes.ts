@@ -3,3 +3,8 @@ export interface IRegister {
     password: string;
     nickname: string;
 }
+
+export interface SignInBody {
+    id: string;
+    password: string;
+}

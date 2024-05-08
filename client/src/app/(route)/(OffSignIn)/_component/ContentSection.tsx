@@ -2,13 +2,19 @@
 import { COLORS } from '@/assets/colors';
 import CoffieIcon from '@/assets/src/CoffieIcon';
 import { Button, ChakraProvider, Flex, Text } from '@chakra-ui/react';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import LoginModal from './LoginModal';
 import RegisterModal from './RegisterModal';
+import { useSession } from 'next-auth/react';
 
 export default function ContentSection() {
     const [signInModal, setSignInModal] = useState<boolean>(false);
     const [signUpModal, setSignUpModal] = useState<boolean>(false);
+    const session = useSession();
+
+    useEffect(() => {
+        console.log(session, '세션')
+    }, [session])
 
     return (
         <ChakraProvider>
