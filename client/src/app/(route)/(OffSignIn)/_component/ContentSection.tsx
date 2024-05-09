@@ -6,10 +6,12 @@ import React, { useEffect, useState } from 'react'
 import LoginModal from './LoginModal';
 import RegisterModal from './RegisterModal';
 import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 
 export default function ContentSection() {
     const [signInModal, setSignInModal] = useState<boolean>(false);
     const [signUpModal, setSignUpModal] = useState<boolean>(false);
+    const { data } = useSession();
 
     return (
         <ChakraProvider>
