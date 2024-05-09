@@ -24,20 +24,18 @@ export const authConfig = {
                     if (data.status !== 200) return null;
 
                     // 로그인 성공 처리
-                    const resData = data.data as IRegister;
+                    const resData = data.data as User & IRegister;
 
                     console.log(resData, 'resData');
 
                     const user = {
                         id: resData.id ?? '',
                         name: resData.nickname ?? '',
-                        email: resData.id ?? '',
+                        _id: resData._id ?? '',
                     } as User;
 
-                    return {
-                        ...user,
-                        jihoo: 'klom'
-                    };
+                    console.log(user, '넘어가는 유저')
+                    return user;
                 }
                 return null;
             },

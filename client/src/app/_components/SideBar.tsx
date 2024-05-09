@@ -21,10 +21,6 @@ interface Props {
 export default function SideBar({ session }: Props) {
     const router = useRouter();
 
-    useEffect(() => {
-        console.log(session, '세션')
-    }, [])
-
     if (!session.user) {
         return null;
     }
@@ -101,7 +97,7 @@ export default function SideBar({ session }: Props) {
                     <Flex mb={5} alignItems={'center'}>
                         <Avatar />
                         <Text color={COLORS.white} ml={5} fontWeight={'bold'} fontSize={18}>
-                            {session.user.name}
+                            {session?.user?.name}
                         </Text>
                     </Flex>
                     <Button colorScheme={'blue'} onClick={onSignOut}>

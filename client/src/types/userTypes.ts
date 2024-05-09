@@ -7,7 +7,8 @@ export interface IRegister {
 export type User = {
     id: string
     email: string
-    name: string
+    name: string,
+    _id?: string
 }
 
 export interface SignInBody {
