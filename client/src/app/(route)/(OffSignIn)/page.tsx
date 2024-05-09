@@ -2,12 +2,15 @@ import React from 'react'
 import styles from './_css/login.module.css';
 import ContentSection from './_component/ContentSection';
 import { auth } from '@/auth';
+import { redirect } from 'next/navigation';
 
 export default async function page() {
 
-    const { user } = await auth();
+    const session = await auth();
 
-    console.log(user)
+    if (session?.user) {
+        redirect('/home');
+    }
 
     return (
         <div className={styles.container}>

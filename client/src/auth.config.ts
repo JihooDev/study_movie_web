@@ -26,6 +26,8 @@ export const authConfig = {
                     // 로그인 성공 처리
                     const resData = data.data as IRegister;
 
+                    console.log(resData, 'resData');
+
                     const user = {
                         id: resData.id ?? '',
                         name: resData.nickname ?? '',

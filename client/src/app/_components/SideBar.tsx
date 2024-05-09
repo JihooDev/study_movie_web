@@ -7,13 +7,36 @@ import LikeIcon from '@/assets/src/LikeIcon'
 import Logo from '@/assets/src/Logo'
 import SearchIcon from '@/assets/src/SearchIcon'
 import TrendingIcon from '@/assets/src/TrendingIcon'
-import { Box, Center, ChakraProvider, Flex, Text, VStack } from '@chakra-ui/react'
-import { useRouter } from 'next/navigation'
-import React from 'react'
+import { Avatar, Box, Button, Center, ChakraProvider, Flex, Text, VStack } from '@chakra-ui/react'
+import { signOut, useSession } from 'next-auth/react'
+import { redirect, useRouter } from 'next/navigation'
+import React, { useEffect } from 'react'
+import { Session } from '@auth/core/types';
+import { toast } from 'react-toastify'
 
-export default function SideBar() {
+interface Props {
+    session: Session
+}
 
+export default function SideBar({ session }: Props) {
     const router = useRouter();
+
+    useEffect(() => {
+        console.log(session, '세션')
+    }, [])
+
+    if (!session.user) {
+        return null;
+    }
+
+    const onSignOut = async () => {
+        signOut({
+            redirect: false
+        }).then(() => {
+            toast('로그아웃 되었습니다', { type: 'info' })
+            router.replace('/');
+        })
+    }
 
     const sideMenuList = [
         {
@@ -62,7 +85,7 @@ export default function SideBar() {
                         TMDB
                     </Text>
                 </Center>
-                <Flex flexDirection={'column'} w={'full'}>
+                <Flex flexDirection={'column'} flex={1}>
                     {
                         sideMenuList.map((menu, index) => (
                             <Flex key={menu.title} alignItems={'center'} px={10} mb={10} cursor={'pointer'} onClick={() => { handleMenuClick(index) }}>
@@ -73,6 +96,17 @@ export default function SideBar() {
                             </Flex>
                         ))
                     }
+                </Flex>
+                <Flex w={'full'} h={200} flexDirection={'column'} px={3} justifyContent={'center'}>
+                    <Flex mb={5} alignItems={'center'}>
+                        <Avatar />
+                        <Text color={COLORS.white} ml={5} fontWeight={'bold'} fontSize={18}>
+                            {session.user.name}
+                        </Text>
+                    </Flex>
+                    <Button colorScheme={'blue'} onClick={onSignOut}>
+                        로그아웃
+                    </Button>
                 </Flex>
             </Flex>
         </ChakraProvider>
