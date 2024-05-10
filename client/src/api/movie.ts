@@ -1,6 +1,8 @@
-import { MovieCreditsTypes, MovieTypes } from '@/types/movie';
+import { IMovieVideo, MovieCreditsTypes, MovieTypes } from '@/types/movie';
 import { QueryFunction } from '@tanstack/react-query';
 import axios from 'axios';
+
+export const VIDEO_URL = 'https://www.youtube.com/watch?v=';
 
 const tmdb = axios.create({
     baseURL: process.env.NEXT_PUBLIC_BASE_URL,
@@ -53,4 +55,11 @@ export const getPopularMovie = async () => {
     const { data } = await tmdb.get('movie/popular');
 
     return data;
+}
+
+export const getMovieVideos: QueryFunction<IMovieVideo[], [_1: string, _2: string]> = async ({ queryKey }) => {
+    const [_, id] = queryKey;
+    const { data } = await tmdb.get(`/movie/${id}/videos`);
+
+    return data.results;
 }

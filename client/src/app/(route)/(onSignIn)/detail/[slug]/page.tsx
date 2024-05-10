@@ -1,5 +1,5 @@
 import React from 'react'
-import { getMovieCredits, getMovieDetail } from '@/api/movie'
+import { getMovieCredits, getMovieDetail, getMovieVideos } from '@/api/movie'
 import { HydrationBoundary, QueryClient, dehydrate } from '@tanstack/react-query'
 import DetailHeader from './_component/DetailHeader'
 import IntroductionSection from './_component/IntroductionSection'
@@ -16,7 +16,8 @@ export default async function Page({ params: { slug } }: PageProps) {
     const queryClient = new QueryClient();
 
     await queryClient.prefetchQuery({ queryKey: ['movie_detail', id], queryFn: getMovieDetail });
-    await queryClient.prefetchQuery({ queryKey: ['movie_credits', id], queryFn: getMovieCredits })
+    await queryClient.prefetchQuery({ queryKey: ['movie_credits', id], queryFn: getMovieCredits });
+    await queryClient.prefetchQuery({ queryKey: ['movie_videos', id], queryFn: getMovieVideos });
     const dehydratedState = dehydrate(queryClient);
 
     return (

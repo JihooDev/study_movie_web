@@ -3,6 +3,7 @@ import BookmarkIcon from '@/assets/src/BookmarkIcon'
 import LikeIcon from '@/assets/src/LikeIcon'
 import ListIcon from '@/assets/src/ListIcon'
 import { Box, Button, Flex, Text } from '@chakra-ui/react'
+import { useSession } from 'next-auth/react'
 import React, { useState } from 'react'
 
 interface Props {
@@ -13,8 +14,10 @@ type ButtonActionTypes = 'add_my_list' | 'like' | 'bookmark'
 
 export default function ActionButtons({ id }: Props) {
 
-    const [isLogin, setIsLogin] = useState<boolean>(false);
+    const session = useSession();
     const [alertMessage, setAlertMessage] = useState<string>('');
+
+    const isLogin = session.data?.user;
 
     const buttonList = [
         {
@@ -23,7 +26,7 @@ export default function ActionButtons({ id }: Props) {
         },
         {
             type: 'like',
-            renderIcon: () => (<LikeIcon backgroundColor={COLORS.white} size={20} />)
+            renderIcon: () => (<LikeIcon color={COLORS.white} size={20} />)
         },
         {
             type: 'bookmark',

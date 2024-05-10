@@ -1,12 +1,13 @@
 "use client";
 
 import { COLORS } from '@/assets/colors'
-import { MovieCreditsTypes, MovieTypes } from '@/types/movie'
-import { Box, ChakraProvider, Flex, Heading, Text } from '@chakra-ui/react'
+import { IMovieVideo, MovieCreditsTypes, MovieTypes } from '@/types/movie'
+import { Box, Button, ChakraProvider, Flex, Heading, Text } from '@chakra-ui/react'
 import { useQueryClient } from '@tanstack/react-query';
 import React, { useEffect } from 'react'
 import ActionButtons from './ActionButtons';
 import Link from 'next/link';
+import { VIDEO_URL } from '@/api/movie';
 
 interface Props {
     id: string
@@ -18,8 +19,13 @@ export default function IntroductionSection({ id }: Props) {
 
     const data: MovieTypes | undefined = queryClient.getQueryData(['movie_detail', id]);
     const credits: MovieCreditsTypes | undefined = queryClient.getQueryData(['movie_credits', id]);
-
+    const videos: IMovieVideo[] | undefined = queryClient.getQueryData(['movie_videos', id]);
     const director = credits?.crew.find(crew => crew.job === 'Director')?.name;
+
+
+    const trailer = videos.filter(value => value.type === 'Trailer')?.[0];
+
+    console.log(trailer);
 
     if (!data) {
         return <></>
@@ -55,7 +61,12 @@ export default function IntroductionSection({ id }: Props) {
                                     }
                                 </Flex>
                             </Flex>
-                            <ActionButtons id={id} />
+                            <Flex alignItems={'center'}>
+                                <ActionButtons id={id} />
+                                <Button mt={5} colorScheme={'whatsapp'} px={5} fontSize={14} onClick={() => window.open(`${VIDEO_URL}${trailer.key}`)}>
+                                    트레일러 시청
+                                </Button>
+                            </Flex>
                             <Text color={COLORS.white} fontStyle={'italic'} mt={5} opacity={.7}>
                                 {data.tagline}
                             </Text>
