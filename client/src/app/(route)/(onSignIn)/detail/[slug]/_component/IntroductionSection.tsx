@@ -4,28 +4,24 @@ import { COLORS } from '@/assets/colors'
 import { IMovieVideo, MovieCreditsTypes, MovieTypes } from '@/types/movie'
 import { Box, Button, ChakraProvider, Flex, Heading, Text } from '@chakra-ui/react'
 import { useQueryClient } from '@tanstack/react-query';
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import ActionButtons from './ActionButtons';
 import Link from 'next/link';
 import { VIDEO_URL } from '@/api/movie';
+import TrailerModal from './TrailerModal';
 
 interface Props {
     id: string
 }
 
 export default function IntroductionSection({ id }: Props) {
-
     const queryClient = useQueryClient();
-
+    const [trailerOpen, setTrailerOpen] = useState<boolean>(false);
     const data: MovieTypes | undefined = queryClient.getQueryData(['movie_detail', id]);
     const credits: MovieCreditsTypes | undefined = queryClient.getQueryData(['movie_credits', id]);
     const videos: IMovieVideo[] | undefined = queryClient.getQueryData(['movie_videos', id]);
     const director = credits?.crew.find(crew => crew.job === 'Director')?.name;
-
-
     const trailer = videos.filter(value => value.type === 'Trailer')?.[0];
-
-    console.log(trailer);
 
     if (!data) {
         return <></>
@@ -33,6 +29,11 @@ export default function IntroductionSection({ id }: Props) {
 
     return (
         <ChakraProvider>
+            <TrailerModal
+                isOpen={trailerOpen}
+                onClose={() => setTrailerOpen(false)}
+                id={trailer.key}
+            />
             <Flex width={'full'} height={600} justifyContent={'space-between'} alignItems={'center'}>
                 <Box position={'absolute'} width={'100%'} height={600} left={0} backgroundImage={`https://image.tmdb.org/t/p/w1280/${data.backdrop_path}`} backgroundRepeat={'no-repeat'} backgroundSize={'cover'} zIndex={-2} />
                 <Box position={'absolute'} width={'100%'} height={600} left={0} background={'linear-gradient(to right, rgba(10.5, 31.5, 52.5, 1) calc((50vw - 170px) - 340px), rgba(10.5, 31.5, 52.5, 0.84) 50%, rgba(10.5, 31.5, 52.5, 0.84) 100%);'} zIndex={-1} />
@@ -63,7 +64,7 @@ export default function IntroductionSection({ id }: Props) {
                             </Flex>
                             <Flex alignItems={'center'}>
                                 <ActionButtons id={id} />
-                                <Button mt={5} colorScheme={'whatsapp'} px={5} fontSize={14} onClick={() => window.open(`${VIDEO_URL}${trailer.key}`)}>
+                                <Button mt={5} colorScheme={'whatsapp'} px={5} fontSize={14} onClick={() => setTrailerOpen(true)}>
                                     트레일러 시청
                                 </Button>
                             </Flex>
