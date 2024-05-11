@@ -42,7 +42,7 @@ export default function MovieCard({ movie }: Props) {
                     : <Box w={'full'} h={'full'} backgroundColor={COLORS.gray} position={'absolute'} zIndex={0} />
             }
             <Flex flex={1} p={5} zIndex={1} justifyContent={'flex-end'}>
-                <LikeButton id={movie.id} />
+                <LikeButton movie={movie} />
             </Flex>
             <Flex h={'85px'} background={'rgba(0,0,0,0.5)'} zIndex={2} w={'full'} px={3} flexDirection={'column'} justifyContent={'center'}>
                 <Text color={COLORS.white} fontWeight={'bold'} fontSize={16}>

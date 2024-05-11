@@ -11,7 +11,7 @@ const register = async (req: Request, res: Response, next: NextFunction) => {
         const { id, nickname, password }: IUser = req.body;
 
         const userCheck = await User.findOne({ id });
-        const nicknameCheck = await User.findOne({ nickname })
+        const nicknameCheck = await User.findOne({ nickname });
 
         if (userCheck) {
             return res.status(400).json({

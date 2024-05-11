@@ -4,21 +4,34 @@ import { Movie } from "../model/movieModel";
 
 export const addLikeMovie = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const { movie_id, title, user_id } = req.body;
+        const { user_id, movie } = req.body;
 
         const list = await Movie.findOne({ user_id });
 
-        list?.movie_list.push({
-            movie_id,
-            title
-        })
+        if (list) {
+            const findCheckMovie = list?.movie_list.find((m: IMovie['movie_list'][0]) => m.id === movie.id);
 
-        await list?.save();
+            if (findCheckMovie) {
+                return res.status(400).json({
+                    message: 'Movie already exists',
+                    status: 400,
+                })
+            }
 
-        return res.status(200).json({
-            message: 'Movie added successfully',
-            status: 200,
-        })
+            list?.movie_list.push(movie)
+
+            await list?.save();
+
+            return res.status(200).json({
+                message: 'Movie added successfully',
+                status: 200,
+            })
+        } else {
+            return res.status(400).json({
+                message: 'User not found',
+                status: 400,
+            })
+        }
     } catch (error) {
         next(error);
     } finally {
@@ -33,7 +46,7 @@ export const removeLikeMovie = async (req: Request, res: Response, next: NextFun
         const list = await Movie.findOne({ user_id });
 
         if (list) {
-            list.movie_list = list?.movie_list.filter((movie: IMovie['movie_list'][0]) => movie.movie_id !== movie_id);
+            list.movie_list = list?.movie_list.filter((movie: IMovie['movie_list'][0]) => movie.id !== movie_id);
 
             await list.save();
 

@@ -1,3 +1,4 @@
+import { MovieTypes } from "@/types/movie";
 import { ServerResponse } from "@/types/responseType";
 import { IRegister, SignInBody } from "@/types/userTypes";
 import { QueryFunction } from "@tanstack/react-query";
@@ -29,8 +30,8 @@ export const getLikeMovie: QueryFunction<ServerResponse, [_1: string, _2: string
     return data;
 }
 
-export const addLikeMovie = async ({ user_id, movie_id, title }: { user_id: string, movie_id: string, title: string }) => {
-    const { data } = await userInstance.post(`movie/add_movie`, { user_id, movie_id, title });
+export const addLikeMovie = async ({ user_id, movie }: { user_id: string, movie: MovieTypes }) => {
+    const { data } = await userInstance.post(`movie/add_movie`, { user_id, movie });
 
     return data;
 }
