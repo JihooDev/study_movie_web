@@ -30,9 +30,9 @@ export default function IntroductionSection({ id }: Props) {
     return (
         <ChakraProvider>
             <TrailerModal
-                isOpen={trailerOpen}
+                isOpen={trailer?.key && trailerOpen}
                 onClose={() => setTrailerOpen(false)}
-                id={trailer.key}
+                id={trailer?.key}
             />
             <Flex width={'full'} height={600} justifyContent={'space-between'} alignItems={'center'}>
                 <Box position={'absolute'} width={'100%'} height={600} left={0} backgroundImage={`https://image.tmdb.org/t/p/w1280/${data.backdrop_path}`} backgroundRepeat={'no-repeat'} backgroundSize={'cover'} zIndex={-2} />
@@ -64,9 +64,13 @@ export default function IntroductionSection({ id }: Props) {
                             </Flex>
                             <Flex alignItems={'center'}>
                                 <ActionButtons id={id} />
-                                <Button mt={5} colorScheme={'whatsapp'} px={5} fontSize={14} onClick={() => setTrailerOpen(true)}>
-                                    트레일러 시청
-                                </Button>
+                                {
+                                    trailer?.key && (
+                                        <Button mt={5} colorScheme={'whatsapp'} px={5} fontSize={14} onClick={() => setTrailerOpen(true)}>
+                                            트레일러 시청
+                                        </Button>
+                                    )
+                                }
                             </Flex>
                             <Text color={COLORS.white} fontStyle={'italic'} mt={5} opacity={.7}>
                                 {data.tagline}
