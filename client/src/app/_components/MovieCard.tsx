@@ -26,7 +26,7 @@ export default function MovieCard({ movie }: Props) {
         if (movie.release_date === '') {
             return '정보 없음';
         }
-
+        // 
         return `${movie.release_date.split('-')[0]} | ${genreFilter.filter(value => value.type === movie.genre_ids[0])[0]?.title}`;
     };
 
