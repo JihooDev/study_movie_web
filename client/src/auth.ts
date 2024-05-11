@@ -19,7 +19,7 @@ export const { signIn, signOut, handlers: { GET, POST }, auth } = NextAuth({
                 returnData = {
                     ...returnData,
                     user: {
-                        id: userData.id,
+                        id: userData._id,
                         _id: userData._id,
                         name: userData.name
                     }

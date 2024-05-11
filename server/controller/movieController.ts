@@ -56,7 +56,7 @@ export const removeLikeMovie = async (req: Request, res: Response, next: NextFun
 
 export const getLikeMovie = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const { user_id } = req.body;
+        const { user_id } = req.query;
 
         const list = await Movie.findOne({ user_id });
 

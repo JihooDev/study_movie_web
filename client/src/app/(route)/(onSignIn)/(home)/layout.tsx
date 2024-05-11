@@ -13,7 +13,6 @@ export default async function layout({
 }: Readonly<{
     children: React.ReactNode;
 }>) {
-
     const session = await auth();
 
     if (!session) {

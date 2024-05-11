@@ -54,7 +54,6 @@ export default function SideBar({ session }: Props) {
         {
             title: 'Favourites',
             path: '/favourites',
-            activate: false,
             icon: () => <LikeIcon color={COLORS.white} size={20} />
         },
     ]

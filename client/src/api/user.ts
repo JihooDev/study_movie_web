@@ -1,4 +1,6 @@
+import { ServerResponse } from "@/types/responseType";
 import { IRegister, SignInBody } from "@/types/userTypes";
+import { QueryFunction } from "@tanstack/react-query";
 import axios from "axios";
 
 const userInstance = axios.create({
@@ -13,6 +15,28 @@ export const postRegister = async (body: IRegister) => {
 
 export const postLogin = async (body: SignInBody) => {
     const { data } = await userInstance.post(`/user/login`, body);
+
+    return data;
+}
+
+export const getLikeMovie: QueryFunction<ServerResponse, [_1: string, _2: string]> = async ({ queryKey }) => {
+    const [_, user_id] = queryKey;
+
+    console.log(user_id)
+
+    const { data } = await userInstance.get(`movie/get_like_movie?user_id=${user_id}`);
+
+    return data;
+}
+
+export const addLikeMovie = async ({ user_id, movie_id, title }: { user_id: string, movie_id: string, title: string }) => {
+    const { data } = await userInstance.post(`movie/add_movie`, { user_id, movie_id, title });
+
+    return data;
+}
+
+export const removeLikeMovie = async ({ movie_id, user_id }: { movie_id: string, user_id: string }) => {
+    const { data } = await userInstance.post(`movie/remove_movie`, { movie_id, user_id });
 
     return data;
 }
