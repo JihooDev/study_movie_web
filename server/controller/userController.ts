@@ -4,6 +4,7 @@ import { User } from "../model/userModel";
 import bcrypt from 'bcrypt';
 import { IResponse } from "../@types/ResponseTypes";
 import { NextFunction } from "express";
+import { Movie } from "../model/movieModel";
 
 const register = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -34,6 +35,11 @@ const register = async (req: Request, res: Response, next: NextFunction) => {
             nickname,
             password: hashPassword,
         });
+
+        await Movie.create({
+            user_id: user._id,
+            movie_list: [],
+        })
 
         delete user?.password;
 

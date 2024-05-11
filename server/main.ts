@@ -3,6 +3,7 @@ import express, { Express } from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import { router as userRoute } from './routes/userRoute';
+import { router as movieRoute } from './routes/movieRoutes';
 
 dotenv.config();
 
@@ -12,7 +13,8 @@ const app: Express = express();
 app.use(cors());
 app.use(express.json());
 
-app.use('/user', userRoute)
+app.use('/user', userRoute);
+app.use('/movie', movieRoute);
 
 app.listen(PORT, () => {
     runMongoDB();
