@@ -10,10 +10,10 @@ import { toast } from 'react-toastify'
 
 interface Props {
     movie: MovieTypes,
+    liked: boolean
 }
 
-export default function LikeButton({ movie }: Props) {
-
+export default function LikeButton({ movie, liked }: Props) {
     const { mutate, isPending, isSuccess } = useMutation({
         mutationKey: ['like_movie', movie?.id],
         mutationFn: addLikeMovie,
@@ -38,8 +38,8 @@ export default function LikeButton({ movie }: Props) {
     }
 
     return (
-        <Button onClick={onLikeMovie} p={0}>
-            <LikeIcon size={18} color={COLORS.pupple} />
+        <Button onClick={onLikeMovie} p={0} backgroundColor={liked ? COLORS.pupple : COLORS.white}>
+            <LikeIcon size={18} color={liked ? COLORS.white : COLORS.pupple} />
         </Button>
     )
 }

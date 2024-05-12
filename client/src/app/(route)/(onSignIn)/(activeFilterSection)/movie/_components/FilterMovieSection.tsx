@@ -15,6 +15,7 @@ import { useInView } from 'react-intersection-observer';
 export default function MovieSection() {
     const { url } = useFilterStore();
 
+
     const {
         data,
         fetchNextPage,

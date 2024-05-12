@@ -73,10 +73,24 @@ export const getLikeMovie = async (req: Request, res: Response, next: NextFuncti
 
         const list = await Movie.findOne({ user_id });
 
-        return res.status(200).json({
-            data: list?.movie_list,
-            status: 200,
-        })
+        if (list) {
+
+            const movie_id_list = list?.movie_list.map((movie: IMovie['movie_list'][0]) => movie.id.toString());
+
+            return res.status(200).json({
+                data: {
+                    movie_list: list?.movie_list,
+                    movie_id_list: movie_id_list,
+                },
+                status: 200,
+            })
+        } else {
+            return res.status(400).json({
+                message: 'Movie not found',
+                status: 400,
+            })
+        }
+
     } catch (error) {
         next(error);
     } finally {

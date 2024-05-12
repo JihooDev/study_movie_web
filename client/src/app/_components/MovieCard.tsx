@@ -9,24 +9,21 @@ import { genreFilter } from '@/menus/menu';
 import { useRouter } from 'next/navigation';
 
 interface Props {
-    movie: MovieTypes
+    movie: MovieTypes,
+    liked: boolean
 }
 
-export default function MovieCard({ movie }: Props) {
-
+export default function MovieCard({ movie, liked }: Props) {
     const router = useRouter();
-
     const onNavigateMovieDetail = () => {
         router.push(`/detail/${movie.id}`);
     }
-
     const title = movie.title.length > 20 ? movie.title.slice(0, 15) + '...' : movie.title;
 
     const dateOrGenre = () => {
         if (movie.release_date === '') {
             return '정보 없음';
         }
-        // 
         return `${movie.release_date.split('-')[0]} | ${genreFilter.filter(value => value.type === movie.genre_ids[0])[0]?.title}`;
     };
 
@@ -42,7 +39,7 @@ export default function MovieCard({ movie }: Props) {
                     : <Box w={'full'} h={'full'} backgroundColor={COLORS.gray} position={'absolute'} zIndex={0} />
             }
             <Flex flex={1} p={5} zIndex={1} justifyContent={'flex-end'}>
-                <LikeButton movie={movie} />
+                <LikeButton movie={movie} liked={liked} />
             </Flex>
             <Flex h={'85px'} background={'rgba(0,0,0,0.5)'} zIndex={2} w={'full'} px={3} flexDirection={'column'} justifyContent={'center'}>
                 <Text color={COLORS.white} fontWeight={'bold'} fontSize={16}>

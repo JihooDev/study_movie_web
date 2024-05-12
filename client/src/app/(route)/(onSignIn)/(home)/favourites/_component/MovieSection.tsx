@@ -1,8 +1,10 @@
 "use client"
 
 import Loading from '@/app/_components/Loading';
+import MovieCard from '@/app/_components/MovieCard';
 import { COLORS } from '@/assets/colors';
-import { Button, Center, ChakraProvider, Text } from '@chakra-ui/react';
+import { MovieTypes } from '@/types/movie';
+import { Button, Center, ChakraProvider, Flex, Grid, Text } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation';
@@ -11,9 +13,9 @@ import React from 'react'
 interface FavouriteMovie {
     status: number;
     data: {
-        movie_id: string;
-        title: string;
-    }[]
+        movie_list: MovieTypes[],
+        movie_id_list: string[]
+    };
 }
 
 export default function MovieSection() {
@@ -36,7 +38,7 @@ export default function MovieSection() {
         )
     }
 
-    if (data.data.length === 0) {
+    if (data.data.movie_list.length === 0) {
         return (
             <ChakraProvider>
                 <Center flex={1} height={'80%'} flexDirection={'column'}>
@@ -58,6 +60,39 @@ export default function MovieSection() {
 
     return (
         <ChakraProvider>
+            <Flex
+                flex={1}
+                justifyContent={'center'}
+                alignItems={'center'}
+                maxHeight={'100%'}
+                overflow={'scroll'}
+                sx={
+                    {
+                        '::-webkit-scrollbar': {
+                            display: 'none'
+                        }
+                    }
+                }
+                paddingY={10}
+                px={3}
+            >
+                <Flex gap={0} height={'100%'} width={'100%'} flexDirection={'column'} alignItems={'center'}>
+                    <Grid templateColumns={'repeat(4,1fr)'} gap={6}>
+                        {data?.data.movie_list.map((movie, i) => {
+                            const checker = data.data.movie_id_list.includes(movie.id.toString());
+                            return (
+                                <React.Fragment key={movie.id}>
+                                    <MovieCard
+                                        movie={movie}
+                                        liked={checker}
+                                    />
+                                </React.Fragment>
+                            )
+                        })}
+                    </Grid>
+                </Flex>
+            </Flex>
+
         </ChakraProvider>
     )
 }
