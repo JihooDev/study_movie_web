@@ -10,10 +10,10 @@ import { useRouter } from 'next/navigation';
 
 interface Props {
     movie: MovieTypes,
-    liked: boolean
+    liked?: boolean
 }
 
-export default function MovieCard({ movie, liked }: Props) {
+export default function MovieCard({ movie, liked = false }: Props) {
     const router = useRouter();
     const onNavigateMovieDetail = () => {
         router.push(`/detail/${movie.id}`);
