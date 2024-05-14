@@ -3,7 +3,7 @@ import { COLORS } from '@/assets/colors'
 import LikeIcon from '@/assets/src/LikeIcon'
 import { MovieTypes } from '@/types/movie'
 import { Box, Button } from '@chakra-ui/react'
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useSession } from 'next-auth/react'
 import React from 'react'
 import { toast } from 'react-toastify'
@@ -14,6 +14,8 @@ interface Props {
 }
 
 export default function LikeButton({ movie, liked }: Props) {
+
+    const queryClinet = useQueryClient();
     const { mutate, isPending, isSuccess } = useMutation({
         mutationKey: ['like_movie', movie?.id],
         mutationFn: addLikeMovie,
@@ -28,13 +30,15 @@ export default function LikeButton({ movie, liked }: Props) {
     })
 
     const session = useSession();
-
     const user_id = session.data?.user.id;
+    const likedMovie = queryClinet.getQueryData(['like_movie', user_id]);
+
+
 
     const onLikeMovie = (e: React.MouseEvent) => {
         e.stopPropagation();
-
-        mutate({ user_id, movie });
+        console.log(likedMovie);
+        // mutate({ user_id, movie });
     }
 
     return (

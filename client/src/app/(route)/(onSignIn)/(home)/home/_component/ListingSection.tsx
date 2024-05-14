@@ -16,7 +16,6 @@ interface Props {
 export default function ListingSection({ queryKey, title }: Props) {
 
     const queryClient = useQueryClient();
-
     const data: MovieResponse | undefined = queryClient.getQueryData([queryKey]);
 
     return (

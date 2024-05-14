@@ -22,10 +22,7 @@ export const postLogin = async (body: SignInBody) => {
 
 export const getLikeMovie: QueryFunction<ServerResponse, [_1: string, _2: string]> = async ({ queryKey }) => {
     const [_, user_id] = queryKey;
-
-    console.log(user_id)
-
-    const { data } = await userInstance.get(`movie/get_like_movie?user_id=${user_id}`);
+    const { data } = await userInstance.get(`movie/get_like_movie?user_id=${user_id.toString()}`);
 
     return data;
 }

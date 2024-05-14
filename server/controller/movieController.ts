@@ -74,7 +74,6 @@ export const getLikeMovie = async (req: Request, res: Response, next: NextFuncti
         const list = await Movie.findOne({ user_id });
 
         if (list) {
-
             const movie_id_list = list?.movie_list.map((movie: IMovie['movie_list'][0]) => movie.id.toString());
 
             return res.status(200).json({
@@ -92,6 +91,7 @@ export const getLikeMovie = async (req: Request, res: Response, next: NextFuncti
         }
 
     } catch (error) {
+        console.log(error);
         next(error);
     } finally {
         console.log('영화 좋아요 목록 조회 완료');
