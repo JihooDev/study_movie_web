@@ -1,4 +1,4 @@
-import { addLikeMovie } from '@/api/user'
+import { addLikeMovie, removeLikeMovie } from '@/api/user'
 import { COLORS } from '@/assets/colors'
 import LikeIcon from '@/assets/src/LikeIcon'
 import { MovieTypes } from '@/types/movie'
@@ -36,6 +36,19 @@ export default function LikeButton({ movie }: Props) {
         }
     })
 
+    const { mutate: removeMutate } = useMutation({
+        mutationKey: ['remove_like_movie', movie?.id.toString(), user_id as string],
+        mutationFn: removeLikeMovie,
+        onSuccess(data) {
+            console.log(data);
+            queryClinet.refetchQueries({
+                queryKey: ['like_movie', user_id],
+            });
+            setLiked(false);
+            toast(`좋아하는 영화에서 제거되었습니다`, { type: 'info' });
+        }
+    })
+
     useEffect(() => {
         if (likedMovie?.status === 200) {
             setLiked(likedMovie?.data?.movie_id_list.includes(movie?.id.toString()));
@@ -51,6 +64,10 @@ export default function LikeButton({ movie }: Props) {
         if (!likeStatus) {
             mutate({ user_id, movie });
         } else {
+            removeMutate({
+                movie_id: movie?.id.toString(),
+                user_id: user_id as string,
+            });
             toast(`이미 추가된 영화입니다`, { type: 'info' });
         }
     }
