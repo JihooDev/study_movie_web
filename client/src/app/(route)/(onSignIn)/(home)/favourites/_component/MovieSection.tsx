@@ -26,12 +26,12 @@ export default function MovieSection() {
 
     const user_id = session.data?.user.id;
 
-    const data = queryClient.getQueryData<FavouriteMovie | undefined>(['favourite_movie', user_id]);
+    const data = queryClient.getQueryData<FavouriteMovie | undefined>(['like_movie', user_id]);
 
     if (!data) {
         return (
             <ChakraProvider>
-                <Center flex={1} height={'100%'}>
+                <Center flex={1} height={'40%'}>
                     <Loading />
                 </Center>
             </ChakraProvider>

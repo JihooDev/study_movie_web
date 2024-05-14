@@ -2,25 +2,32 @@ import { addLikeMovie } from '@/api/user'
 import { COLORS } from '@/assets/colors'
 import LikeIcon from '@/assets/src/LikeIcon'
 import { MovieTypes } from '@/types/movie'
+import { ServerResponse } from '@/types/responseType'
 import { Box, Button } from '@chakra-ui/react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useSession } from 'next-auth/react'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 
 interface Props {
     movie: MovieTypes,
-    liked: boolean
 }
 
-export default function LikeButton({ movie, liked }: Props) {
-
+export default function LikeButton({ movie }: Props) {
+    const session = useSession();
+    const user_id = session.data?.user.id;
     const queryClinet = useQueryClient();
+    const likedMovie: ServerResponse | undefined = queryClinet.getQueryData(['like_movie', user_id]);
+    const [liked, setLiked] = useState<boolean>(false);
     const { mutate, isPending, isSuccess } = useMutation({
         mutationKey: ['like_movie', movie?.id],
         mutationFn: addLikeMovie,
         onSuccess(data) {
+            queryClinet.refetchQueries({
+                queryKey: ['like_movie', user_id],
+            });
             toast(`좋아하는 영화에 추가되었습니다`, { type: 'success' });
+            setLiked(true);
             console.log(data);
         },
         onError(error) {
@@ -29,16 +36,23 @@ export default function LikeButton({ movie, liked }: Props) {
         }
     })
 
-    const session = useSession();
-    const user_id = session.data?.user.id;
-    const likedMovie = queryClinet.getQueryData(['like_movie', user_id]);
-
+    useEffect(() => {
+        if (likedMovie?.status === 200) {
+            setLiked(likedMovie?.data?.movie_id_list.includes(movie?.id.toString()));
+        }
+    }, [likedMovie])
 
 
     const onLikeMovie = (e: React.MouseEvent) => {
         e.stopPropagation();
-        console.log(likedMovie);
-        // mutate({ user_id, movie });
+
+        const likeStatus = likedMovie?.data?.movie_id_list.includes(movie?.id.toString());
+
+        if (!likeStatus) {
+            mutate({ user_id, movie });
+        } else {
+            toast(`이미 추가된 영화입니다`, { type: 'info' });
+        }
     }
 
     return (
