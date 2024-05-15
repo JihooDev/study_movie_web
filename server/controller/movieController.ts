@@ -46,7 +46,7 @@ export const removeLikeMovie = async (req: Request, res: Response, next: NextFun
         const list = await Movie.findOne({ user_id });
 
         if (list) {
-            list.movie_list = list?.movie_list.filter((movie: IMovie['movie_list'][0]) => movie.id !== movie_id);
+            list.movie_list = list?.movie_list.filter((movie: IMovie['movie_list'][0]) => movie.id.toString() !== movie_id);
 
             await list.save();
 

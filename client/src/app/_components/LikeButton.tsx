@@ -68,7 +68,6 @@ export default function LikeButton({ movie }: Props) {
                 movie_id: movie?.id.toString(),
                 user_id: user_id as string,
             });
-            toast(`이미 추가된 영화입니다`, { type: 'info' });
         }
     }
 

@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import { router as userRoute } from './routes/userRoute';
 import { router as movieRoute } from './routes/movieRoutes';
+import { Server } from 'socket.io';
 
 dotenv.config();
 
@@ -16,9 +17,15 @@ app.use(express.json());
 app.use('/user', userRoute);
 app.use('/movie', movieRoute);
 
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
     runMongoDB();
     console.log(`Run ${PORT}`);
+})
+
+const io = new Server(server);
+
+io.on('connection', (socket) => {
+    console.log(socket, 'socket connected');
 })
 
 const runMongoDB = async () => {

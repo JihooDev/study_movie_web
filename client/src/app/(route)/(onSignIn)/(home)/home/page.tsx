@@ -13,7 +13,6 @@ export default async function Home() {
     await queryClient.prefetchQuery({ queryKey: ['now_playing_movie'], queryFn: getNowPlayingMovie });
     await queryClient.prefetchQuery({ queryKey: ['popular_movie'], queryFn: getPopularMovie });
     await queryClient.prefetchQuery({ queryKey: ['like_movie', session.user.id], queryFn: getLikeMovie });
-
     const dehydratedState = dehydrate(queryClient);
 
     return (

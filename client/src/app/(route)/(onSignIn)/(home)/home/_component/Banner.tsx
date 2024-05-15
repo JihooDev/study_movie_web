@@ -71,7 +71,7 @@ export default function Banner() {
                                             </Text>
                                         </CustomButton>
                                         <Box ml={5}>
-                                            <LikeButton id={data?.results[randomMovieId as number].id} />
+                                            <LikeButton movie={data?.results[randomMovieId as number]} />
                                         </Box>
                                     </Flex>
                                 </Box>
