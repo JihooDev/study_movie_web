@@ -22,10 +22,22 @@ const server = app.listen(PORT, () => {
     console.log(`Run ${PORT}`);
 })
 
-const io = new Server(server);
+const io = new Server(server, {
+    cors: {
+        origin: '*',
+    }
+});
 
 io.on('connection', (socket) => {
-    console.log(socket, 'socket connected');
+    console.log(socket.id, 'socket connected');
+})
+
+io.on('disconnect', (socket) => {
+    console.log(socket.id, 'socket disconnected');
+})
+
+io.on('like_movie', (data) => {
+    console.log(data, 'like_movie');
 })
 
 const runMongoDB = async () => {

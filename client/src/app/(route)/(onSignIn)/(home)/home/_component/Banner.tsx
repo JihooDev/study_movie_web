@@ -12,6 +12,7 @@ import { useQuery } from '@tanstack/react-query';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
+import { socket } from '../../../_socket/SocketProvider';
 
 export default function Banner() {
     const [randomMovieId, setRandomMovieId] = useState<number | null>(null);

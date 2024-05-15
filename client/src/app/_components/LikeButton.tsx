@@ -8,6 +8,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useSession } from 'next-auth/react'
 import React, { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
+import { socket } from '../(route)/(onSignIn)/_socket/SocketProvider'
 
 interface Props {
     movie: MovieTypes,
@@ -59,16 +60,19 @@ export default function LikeButton({ movie }: Props) {
     const onLikeMovie = (e: React.MouseEvent) => {
         e.stopPropagation();
 
-        const likeStatus = likedMovie?.data?.movie_id_list.includes(movie?.id.toString());
+        console.log(socket.connected);
 
-        if (!likeStatus) {
-            mutate({ user_id, movie });
-        } else {
-            removeMutate({
-                movie_id: movie?.id.toString(),
-                user_id: user_id as string,
-            });
-        }
+        socket.emit('like_movie', { user_id, movie });
+        // const likeStatus = likedMovie?.data?.movie_id_list.includes(movie?.id.toString());
+
+        // if (!likeStatus) {
+        //     mutate({ user_id, movie });
+        // } else {
+        //     removeMutate({
+        //         movie_id: movie?.id.toString(),
+        //         user_id: user_id as string,
+        //     });
+        // }
     }
 
     return (
