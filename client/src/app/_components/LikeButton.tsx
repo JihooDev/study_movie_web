@@ -9,6 +9,7 @@ import { useSession } from 'next-auth/react'
 import React, { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 import { socket } from '../(route)/(onSignIn)/_socket/SocketProvider'
+import { io } from 'socket.io-client'
 
 interface Props {
     movie: MovieTypes,
@@ -37,6 +38,21 @@ export default function LikeButton({ movie }: Props) {
         }
     })
 
+    useEffect(() => {
+        if (socket.connected) {
+            socket.on(`movie_${movie?.id}`, (data) => {
+                console.log(data);
+                if (data.message === 'add like movie') {
+                    setLiked(true);
+                }
+
+                if (data.message === 'remove like movie') {
+                    setLiked(false);
+                }
+            })
+        }
+    }, [])
+
     const { mutate: removeMutate } = useMutation({
         mutationKey: ['remove_like_movie', movie?.id.toString(), user_id as string],
         mutationFn: removeLikeMovie,
@@ -60,9 +76,17 @@ export default function LikeButton({ movie }: Props) {
     const onLikeMovie = (e: React.MouseEvent) => {
         e.stopPropagation();
 
-        console.log(socket.connected);
+        if (socket.connected) {
 
-        socket.emit('like_movie', { user_id, movie });
+            console.log(socket.id);
+
+            socket.emit('likeMovie', {
+                movie,
+                user_id,
+            });
+        } else {
+            console.log('연결 안됨')
+        }
         // const likeStatus = likedMovie?.data?.movie_id_list.includes(movie?.id.toString());
 
         // if (!likeStatus) {

@@ -5,9 +5,8 @@ import cors from 'cors';
 import { router as userRoute } from './routes/userRoute';
 import { router as movieRoute } from './routes/movieRoutes';
 import { Server } from 'socket.io';
-
+import { addLikeMovie, addLikeMovieList } from './controller/movieController';
 dotenv.config();
-
 const PORT = process.env.PORT;
 const app: Express = express();
 
@@ -24,21 +23,40 @@ const server = app.listen(PORT, () => {
 
 const io = new Server(server, {
     cors: {
-        origin: '*',
+        origin: "*",
+        credentials: true,
     }
 });
 
 io.on('connection', (socket) => {
     console.log(socket.id, 'socket connected');
-})
 
-io.on('disconnect', (socket) => {
-    console.log(socket.id, 'socket disconnected');
-})
+    socket.on('likeMovie', async (data) => {
+        console.log(data);
+        const { status, message } = await addLikeMovieList(
+            data.user_id,
+            data.movie,
+        )
 
-io.on('like_movie', (data) => {
-    console.log(data, 'like_movie');
-})
+        if (status) {
+            if (message === 'Movie removed successfully') {
+                socket.emit(`movie_${data.movie.id}`, {
+                    message: 'remove like movie',
+                })
+            } else {
+                socket.emit(`movie_${data.movie.id}`, {
+                    message: 'add like movie',
+                })
+            }
+        }
+
+        console.log(status)
+    });
+
+    socket.on('disconnect', () => {
+        console.log(socket.id, 'socket disconnected');
+    });
+});
 
 const runMongoDB = async () => {
     await mongoose.connect(process.env.MONGO_URL as string);
